@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:background="@color/background_floating_material_dark" >
+
+    <TextView
+        android:id="@+id/modules_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/modules_empaticaE4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/modules_empaticaE4_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/circle_red" />
+
+        <TextView
+            android:id="@+id/modules_empaticaE4_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:text="Empatica E4" />
+
+        <Button
+            android:id="@+id/modules_empaticaE4_button"
+            android:enabled="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/button_connect"
+            android:textSize="10dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/modules_polarH7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/modules_polarH7_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/circle_red" />
+
+        <TextView
+            android:id="@+id/modules_polarH7_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:text="POLAR H7" />
+
+        <Button
+            android:id="@+id/modules_polarH7_button"
+            android:enabled="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/button_connect"
+            android:textSize="10dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/modules_affectiva"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/modules_affectiva_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/circle_red" />
+
+        <TextView
+            android:id="@+id/modules_affectiva_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:text="Affectiva" />
+
+        <Button
+            android:id="@+id/modules_affectiva_button"
+            android:enabled="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/button_connect"
+            android:textSize="10dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

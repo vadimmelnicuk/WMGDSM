@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/border" >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Empatica E4"
+            android:textSize="@dimen/fragment_modules_font_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/battery_label"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/battery_label"
+            android:textSize="@dimen/fragment_modules_font_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/acceleration_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/acceleration_label"
+            android:textSize="@dimen/fragment_modules_font_size" />
+
+        <TextView
+            android:id="@+id/acceleration_x"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:text="@string/acceleration_x"
+            android:textSize="@dimen/fragment_modules_font_size" />
+
+        <TextView
+            android:id="@+id/acceleration_y"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:text="@string/acceleration_y"
+            android:textSize="@dimen/fragment_modules_font_size" />
+
+        <TextView
+            android:id="@+id/acceleration_z"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:text="@string/acceleration_z"
+            android:textSize="@dimen/fragment_modules_font_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/temperature_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/temperature_label"
+            android:textSize="@dimen/fragment_modules_font_size"/>
+
+        <TextView
+            android:id="@+id/bvp_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bvp_label"
+            android:textSize="@dimen/fragment_modules_font_size"/>
+
+        <TextView
+            android:id="@+id/ibi_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ibi_label"
+            android:textSize="@dimen/fragment_modules_font_size"/>
+
+        <TextView
+            android:id="@+id/eda_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/eda_label"
+            android:textSize="@dimen/fragment_modules_font_size"/>
+
+    </LinearLayout>
+
+</LinearLayout>

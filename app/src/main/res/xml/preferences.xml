@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory
+        android:title="Modules"
+        android:key="pref_modules">
+
+        <CheckBoxPreference
+            android:title="Empatica E4 wristband"
+            android:defaultValue="false"
+            android:key="pref_modules_empaticaE4" />
+
+        <CheckBoxPreference
+            android:title="POLAR H7 Heart Monitor"
+            android:defaultValue="false"
+            android:key="pref_modules_polarH7" />
+
+        <CheckBoxPreference
+            android:title="Affectiva Emotions Tracking"
+            android:defaultValue="false"
+            android:key="pref_modules_affectiva" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

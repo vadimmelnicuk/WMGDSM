@@ -1,3 +1,31 @@
 <resources>
+    <string name="menu_toolbar_action_sessions">Sessions</string>
+    <string name="menu_toolbar_action_settings">Settings</string>
+
     <string name="app_name">WMG DSM</string>
+    <string name="empatica_api_key">190f51e2d6c145af90426afebf6dcb3b</string>
+    <string name="polarH7_id">449A8E1E</string>
+
+    <string name="acceleration_label">Acceleration</string>
+    <string name="acceleration_x">x: -</string>
+    <string name="acceleration_y">y: -</string>
+    <string name="acceleration_z">z: -</string>
+    <string name="bpm_label">BPM: -</string>
+    <string name="bvp_label">BVP: -</string>
+    <string name="eda_label">EDA: -</string>
+    <string name="ibi_label">IBI: -</string>
+    <string name="empty_text">-</string>
+    <string name="temperature_label">Temperature: -</string>
+    <string name="battery_label">Battery: -</string>
+    <string name="smile_label">Smile: -</string>
+
+    <string name="button_connect">Connect</string>
+    <string name="button_reset">Reset</string>
+    <string name="button_save">Save</string>
+    <string name="button_start_session">Start Session</string>
+    <string name="button_end_session">End Session</string>
+
+    <string name="settings_devices_label">Devices</string>
+
+    <string name="footer">©2016 WMG, University of Warwick\nDeveloped by Vadim Melnicuk</string>
 </resources>
