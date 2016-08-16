@@ -1,4 +1,4 @@
 # WMGDSM
 WMG Driver State Monitoring Application
 
-Read me
+Developed by Vadim Melnicuk
