@@ -37,22 +37,78 @@ public class HelperAffectiva extends Main implements Detector.ImageListener, Cam
 
         detector = new CameraDetector(mContext, CameraDetector.CameraType.CAMERA_FRONT, cameraPreview, 1, Detector.FaceDetectorMode.LARGE_FACES);
         detector.setLicensePath("Affdex.license");
-        detector.setDetectSmile(true);
+
+        detector.setDetectAllAppearances(true);
+        detector.setDetectAllExpressions(true);
+        detector.setDetectAllEmotions(true);
+        detector.setDetectAllEmojis(false);
+
+        detector.setMaxProcessRate(24);
         detector.setImageListener(this);
         detector.setOnCameraEventListener(this);
     }
 
+    public void fragmentOn() {
+        toggleFragment(affectivaFragment, true);
+    }
+
     @Override
-    public void onImageResults(List<Face> list, Frame frame, float v) {
+    public void onImageResults(List<Face> list, Frame frame, float timestamp) {
         if (list == null) {
-            Log.i("Affectiva", "list is empty");
+            updateLabel(FragmentAffectiva.DeviceNameLabel, "Affectiva - No frame present");
             return;
         }
         if (list.size() == 0) {
-            updateLabel(FragmentAffectiva.SmileLabel, "No Face");
+            updateLabel(FragmentAffectiva.DeviceNameLabel, "Affectiva - No face detected");
         } else {
+            updateLabel(FragmentAffectiva.DeviceNameLabel, "Affectiva - Face was detected");
             Face face = list.get(0);
-            updateLabel(FragmentAffectiva.SmileLabel, "Smile: " + face.expressions.getSmile());
+
+            //Appearance
+            Face.GENDER gender = face.appearance.getGender();
+            Face.GLASSES glasses = face.appearance.getGlasses();
+            Face.AGE age = face.appearance.getAge();
+            Face.ETHNICITY ethnicity = face.appearance.getEthnicity();
+
+            //Expressions
+            updateLabel(FragmentAffectiva.AttentionLabel, "Attention: " + String.format("%.02f", face.expressions.getAttention()));
+            updateLabel(FragmentAffectiva.BrowFurrowLabel, "Brow furrow: " + String.format("%.02f", face.expressions.getBrowFurrow()));
+            updateLabel(FragmentAffectiva.BrowRaiseLabel, "Brow raise: " + String.format("%.02f", face.expressions.getBrowRaise()));
+            updateLabel(FragmentAffectiva.InnerBrowRaiseLabel, "Inner brow raise: " + String.format("%.02f", face.expressions.getInnerBrowRaise()));
+            updateLabel(FragmentAffectiva.CheekRaiseLabel, "Cheek raise: " + String.format("%.02f", face.expressions.getCheekRaise()));
+            updateLabel(FragmentAffectiva.ChinRaiseLabel, "Chin raise: " + String.format("%.02f", face.expressions.getChinRaise()));
+            updateLabel(FragmentAffectiva.DimplerLabel, "Dimpler: " + String.format("%.02f", face.expressions.getDimpler()));
+            updateLabel(FragmentAffectiva.EyeClosureLabel, "Eye closure: " + String.format("%.02f", face.expressions.getEyeClosure()));
+            updateLabel(FragmentAffectiva.EyeWidenLabel, "Eye widen: " + String.format("%.02f", face.expressions.getEyeWiden()));
+            updateLabel(FragmentAffectiva.LidTightenLabel, "Lid tighten: " + String.format("%.02f", face.expressions.getLidTighten()));
+            updateLabel(FragmentAffectiva.JawDropLabel, "Jaw drop: " + String.format("%.02f", face.expressions.getJawDrop()));
+            updateLabel(FragmentAffectiva.LipCornerDepressorLabel, "Lip corner depressor: " + String.format("%.02f", face.expressions.getLipCornerDepressor()));
+            updateLabel(FragmentAffectiva.LipPressLabel, "Lip press: " + String.format("%.02f", face.expressions.getLipPress()));
+            updateLabel(FragmentAffectiva.LipPuckerLabel, "Lip pucker: " + String.format("%.02f", face.expressions.getLipPucker()));
+            updateLabel(FragmentAffectiva.LipStretchLabel, "Lip stretch: " + String.format("%.02f", face.expressions.getLipStretch()));
+            updateLabel(FragmentAffectiva.LipSuckLabel, "Lip suck: " + String.format("%.02f", face.expressions.getLipSuck()));
+            updateLabel(FragmentAffectiva.UpperLipRaiseLabel, "Upper lip raise: " + String.format("%.02f", face.expressions.getUpperLipRaise()));
+            updateLabel(FragmentAffectiva.MouthOpenLabel, "Mouth open: " + String.format("%.02f", face.expressions.getMouthOpen()));
+            updateLabel(FragmentAffectiva.NoseWrinkleLabel, "Nose wrinkle: " + String.format("%.02f", face.expressions.getNoseWrinkle()));
+            updateLabel(FragmentAffectiva.SmileLabel, "Smile: " + String.format("%.02f", face.expressions.getSmile()));
+            updateLabel(FragmentAffectiva.SmirkLabel, "Smirk: " + String.format("%.02f", face.expressions.getSmirk()));
+
+            //Emotions
+            updateLabel(FragmentAffectiva.EngagementLabel, "Engagement: " + String.format("%.02f", face.emotions.getEngagement()));
+            updateLabel(FragmentAffectiva.ValenceLabel, "Valence: " + String.format("%.02f", face.emotions.getValence()));
+            updateLabel(FragmentAffectiva.AngerLabel, "Anger: " + String.format("%.02f", face.emotions.getAnger()));
+            updateLabel(FragmentAffectiva.ContemptLabel, "Contempt: " + String.format("%.02f", face.emotions.getContempt()));
+            updateLabel(FragmentAffectiva.DisgustLabel, "Disgust: " + String.format("%.02f", face.emotions.getDisgust()));
+            updateLabel(FragmentAffectiva.FearLabel, "Fear: " + String.format("%.02f", face.emotions.getFear()));
+            updateLabel(FragmentAffectiva.JoyLabel, "Joy: " + String.format("%.02f", face.emotions.getJoy()));
+            updateLabel(FragmentAffectiva.SadnessLabel, "Sadness: " + String.format("%.02f", face.emotions.getSadness()));
+            updateLabel(FragmentAffectiva.SurpriseLabel, "Surprise: " + String.format("%.02f", face.emotions.getSurprise()));
+
+            //Face tracking
+            updateLabel(FragmentAffectiva.FaceDistanceLabel, "Distance: " + String.format("%.02f", face.measurements.getInterocularDistance()));
+            updateLabel(FragmentAffectiva.FaceOrientationPitchLabel, "Pitch: " + String.format("%.02f", face.measurements.orientation.getPitch()));
+            updateLabel(FragmentAffectiva.FaceOrientationRollLabel, "Roll: " + String.format("%.02f", face.measurements.orientation.getRoll()));
+            updateLabel(FragmentAffectiva.FaceOrientationYawLabel, "Yaw: " + String.format("%.02f", face.measurements.orientation.getYaw()));
         }
     }
 

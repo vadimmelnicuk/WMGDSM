@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/modules_affectiva_layout"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/border" >
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/affectiva_header"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,12 +22,297 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/smile_label"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:text="@string/smile_label"
-        android:textSize="@dimen/fragment_modules_font_size" />
+        android:layout_below="@+id/affectiva_header" >
 
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/affectiva_expressions"
+            android:orientation="vertical"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/expressions_label"
+                android:textSize="@dimen/fragment_modules_font_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/affectiva_attention_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/attention_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_brow_furrow_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brow_furrow_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_brow_raise_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brow_raise_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_inner_brow_raise_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/inner_brow_raise_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_cheek_raise_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cheek_raise_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_chin_raise_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chin_raise_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_dimpler_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dimpler_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_eye_closure_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/eye_closure_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_eye_widen_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/eye_widen_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_lid_tighten_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lid_tighten_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_jaw_drop_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/jaw_drop_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_lip_corner_depressor_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lip_corner_depressor_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_lip_press_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lip_press_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_lip_pucker_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lip_pucker_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_lip_stretch_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lip_stretch_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_lip_suck_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lip_suck_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_upper_lip_raise_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/upper_lip_raise_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_mouth_open_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mouth_open_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_nose_wrinkle_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nose_wrinkle_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_smile_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/smile_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_smirk_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/smirk_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/affectiva_emotions"
+            android:orientation="vertical"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/affectiva_expressions">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/emotions_label"
+                android:textSize="@dimen/fragment_modules_font_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/affectiva_engagement_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/engagement_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_valence_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/valence_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_anger_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/anger_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_contempt_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contempt_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_disgust_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/disgust_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_fear_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fear_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_joy_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/joy_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_sadness_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sadness_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_suprise_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/suprise_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/affectiva_emotions"
+            android:layout_toRightOf="@+id/affectiva_expressions"
+            android:layout_marginTop="10dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/face_tracking_label"
+                android:textSize="@dimen/fragment_modules_font_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/affectiva_face_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/face_distance"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_face_orientation_pitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/face_orientation_pitch"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_face_orientation_roll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/face_orientation_roll"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_face_orientation_yaw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/face_orientation_yaw"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

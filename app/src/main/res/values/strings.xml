@@ -17,7 +17,47 @@
     <string name="empty_text">-</string>
     <string name="temperature_label">Temperature: -</string>
     <string name="battery_label">Battery: -</string>
+
+    <string name="expressions_label">Expressions</string>
+    <string name="emotions_label">Emotions</string>
+    <string name="face_tracking_label">Face tracking</string>
+
+    <string name="attention_label">Attention: -</string>
+    <string name="brow_furrow_label">Brow furrow: -</string>
+    <string name="brow_raise_label">Brow raise: -</string>
+    <string name="inner_brow_raise_label">Inner brow raise: -</string>
+    <string name="cheek_raise_label">Cheek raise: -</string>
+    <string name="chin_raise_label">Chin raise: -</string>
+    <string name="dimpler_label">Dimpler: -</string>
+    <string name="eye_closure_label">Eye closure: -</string>
+    <string name="eye_widen_label">Eye widen: -</string>
+    <string name="lid_tighten_label">Lid tighten: -</string>
+    <string name="jaw_drop_label">Jaw drop: -</string>
+    <string name="lip_corner_depressor_label">Lip corner depressor: -</string>
+    <string name="lip_press_label">Lip press: -</string>
+    <string name="lip_pucker_label">Lip pucker: -</string>
+    <string name="lip_stretch_label">Lip stretch: -</string>
+    <string name="lip_suck_label">Lip suck: -</string>
+    <string name="upper_lip_raise_label">Upper lip raise: -</string>
+    <string name="mouth_open_label">Mouth open: -</string>
+    <string name="nose_wrinkle_label">Nose wrinkle: -</string>
     <string name="smile_label">Smile: -</string>
+    <string name="smirk_label">Smirk: -</string>
+
+    <string name="engagement_label">Engagement: -</string>
+    <string name="valence_label">Valence: -</string>
+    <string name="anger_label">Anger: -</string>
+    <string name="contempt_label">Contempt: -</string>
+    <string name="disgust_label">Disgust: -</string>
+    <string name="fear_label">Fear: -</string>
+    <string name="joy_label">Joy: -</string>
+    <string name="sadness_label">Sadness: -</string>
+    <string name="suprise_label">Surprise: -</string>
+
+    <string name="face_distance">Distance: -</string>
+    <string name="face_orientation_pitch">Pitch: -</string>
+    <string name="face_orientation_roll">Roll: -</string>
+    <string name="face_orientation_yaw">Yaw: -</string>
 
     <string name="button_connect">Connect</string>
     <string name="button_reset">Reset</string>

@@ -123,7 +123,7 @@ public class HelperEmpaticaE4 extends Main implements EmpaDataDelegate, EmpaStat
 
     @Override
     public void didReceiveBVP(float bvp, double timestamp) {
-        updateLabel(FragmentEmpaticaE4.bvpLabel, "BVP: " + bvp);
+        updateLabel(FragmentEmpaticaE4.bvpLabel, "BVP: " + String.format("%.03f", bvp));
         if(Main.session_status) {
             Main.empaticaDb.insertBVP(Main.session_timestamp, bvp, timestamp);
         }
@@ -131,7 +131,7 @@ public class HelperEmpaticaE4 extends Main implements EmpaDataDelegate, EmpaStat
 
     @Override
     public void didReceiveIBI(float ibi, double timestamp) {
-        updateLabel(FragmentEmpaticaE4.ibiLabel, "IBI: " + ibi);
+        updateLabel(FragmentEmpaticaE4.ibiLabel, "IBI: " + String.format("%.03f", ibi));
         if(Main.session_status) {
             Main.empaticaDb.insertIBI(Main.session_timestamp, ibi, timestamp);
         }
@@ -139,7 +139,7 @@ public class HelperEmpaticaE4 extends Main implements EmpaDataDelegate, EmpaStat
 
     @Override
     public void didReceiveGSR(float gsr, double timestamp) {
-        updateLabel(FragmentEmpaticaE4.edaLabel, "EDA: " + gsr);
+        updateLabel(FragmentEmpaticaE4.edaLabel, "EDA: " + String.format("%.03f", gsr));
         if(Main.session_status) {
             Main.empaticaDb.insertGSR(Main.session_timestamp, gsr, timestamp);
         }
@@ -147,7 +147,7 @@ public class HelperEmpaticaE4 extends Main implements EmpaDataDelegate, EmpaStat
 
     @Override
     public void didReceiveTemperature(float temperature, double timestamp) {
-        updateLabel(FragmentEmpaticaE4.temperatureLabel, "Temperature: " + temperature);
+        updateLabel(FragmentEmpaticaE4.temperatureLabel, "Temperature: " + String.format("%.03f", temperature));
         if(Main.session_status) {
             Main.empaticaDb.insertTemperature(Main.session_timestamp, temperature, timestamp);
         }

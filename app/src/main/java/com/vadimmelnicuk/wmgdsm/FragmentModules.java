@@ -84,6 +84,10 @@ public class FragmentModules extends Fragment {
 
                         if (!Main.affectivaHelper.detector.isRunning()) {
                             Main.affectivaHelper.detector.start();
+                            Main.affectivaHelper.fragmentOn();
+                            Main.modulesAffectivaConnected = true;
+                            modulesAffectivaButton.setText("Connected");
+                            modulesAffectivaIndicator.setImageResource(R.drawable.circle_green);
                         }
                     }
                 });

@@ -64,6 +64,7 @@ public class Main extends AppCompatActivity {
         // Hide unused fragments
         toggleFragment(empaticaE4Fragment, false);
         toggleFragment(polarH7Fragment, false);
+        toggleFragment(affectivaFragment, false);
 
         // Init modules
         if(modulesEmpaticaE4) {
@@ -109,9 +110,7 @@ public class Main extends AppCompatActivity {
 
         }
         if(modulesAffectiva) {
-            if(affectivaHelper.detector.isRunning()) {
-                affectivaHelper.detector.stop();
-            }
+
         }
     }
 

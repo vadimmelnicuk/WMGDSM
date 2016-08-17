@@ -198,7 +198,7 @@ public class HelperPolarH7 extends Main {
                     for(int n = 2; n < characteristic.getValue().length; n += 2) {
                         final double rr = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 1+BPMOffset+n-2)/1024.0*1000.0;
 //                        Log.i("Polar H7 RR:", Double.toString(rr));
-                        updateLabel(FragmentPolarH7.ibiLabel, "IBI: " + rr);
+                        updateLabel(FragmentPolarH7.ibiLabel, "IBI: " + String.format("%.02f", rr));
                         if(session_status) {
                             polarDb.insertRR(session_timestamp, currentTime, rr);
                         }
