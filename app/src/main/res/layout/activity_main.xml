@@ -76,10 +76,11 @@
 
             <SurfaceView
                 android:id="@+id/camera_view"
-                android:layout_width="70dp"
-                android:layout_height="100dp"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_below="@+id/fragment_affectiva" />
+                android:layout_below="@+id/fragment_affectiva"
+                android:alpha="0" />
 
         </RelativeLayout>
 

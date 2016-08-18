@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -37,6 +38,9 @@ public class Main extends AppCompatActivity {
     public static boolean modulesPolarH7Connected = false;
     public static boolean modulesAffectiva = false;
     public static boolean modulesAffectivaConnected = false;
+    public static boolean displayData = false;
+    public static boolean displayCamera = false;
+    public static boolean syncData = false;
 
     // UI
     public static Fragment empaticaE4Fragment;
@@ -51,6 +55,7 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Variables init
         initVars();
@@ -137,6 +142,9 @@ public class Main extends AppCompatActivity {
         modulesEmpaticaE4 = preferences.getBoolean("pref_modules_empaticaE4", false);
         modulesPolarH7 = preferences.getBoolean("pref_modules_polarH7", false);
         modulesAffectiva = preferences.getBoolean("pref_modules_affectiva", false);
+        displayData = preferences.getBoolean("pref_display_data", false);
+        displayCamera = preferences.getBoolean("pref_display_camera", false);
+        syncData = preferences.getBoolean("pref_sync_data", false);
 
         // Initialize vars that reference UI components
         empaticaE4Fragment = getFragmentManager().findFragmentById(R.id.fragment_empaticae4);

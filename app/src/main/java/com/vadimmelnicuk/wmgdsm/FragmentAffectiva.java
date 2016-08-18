@@ -55,6 +55,11 @@ public class FragmentAffectiva extends Fragment {
     public static TextView FaceOrientationRollLabel;
     public static TextView FaceOrientationYawLabel;
 
+    public static TextView GenderLabel;
+    public static TextView AgeLabel;
+    public static TextView EthnicityLabel;
+    public static TextView GlassesLabel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -99,9 +104,14 @@ public class FragmentAffectiva extends Fragment {
         SadnessLabel = (TextView) getView().findViewById(R.id.affectiva_sadness_label);
         SurpriseLabel = (TextView) getView().findViewById(R.id.affectiva_suprise_label);
 
-        FaceDistanceLabel = (TextView) getView().findViewById(R.id.affectiva_face_distance);
-        FaceOrientationPitchLabel = (TextView) getView().findViewById(R.id.affectiva_face_orientation_pitch);
-        FaceOrientationRollLabel = (TextView) getView().findViewById(R.id.affectiva_face_orientation_roll);
-        FaceOrientationYawLabel = (TextView) getView().findViewById(R.id.affectiva_face_orientation_yaw);
+        FaceDistanceLabel = (TextView) getView().findViewById(R.id.affectiva_face_distance_label);
+        FaceOrientationPitchLabel = (TextView) getView().findViewById(R.id.affectiva_face_orientation_pitch_label);
+        FaceOrientationRollLabel = (TextView) getView().findViewById(R.id.affectiva_face_orientation_roll_label);
+        FaceOrientationYawLabel = (TextView) getView().findViewById(R.id.affectiva_face_orientation_yaw_label);
+
+        GenderLabel = (TextView) getView().findViewById(R.id.affectiva_gender_label);
+        AgeLabel = (TextView) getView().findViewById(R.id.affectiva_age_label);
+        EthnicityLabel = (TextView) getView().findViewById(R.id.affectiva_ethnicity_label);
+        GlassesLabel = (TextView) getView().findViewById(R.id.affectiva_glasses_label);
     }
 }

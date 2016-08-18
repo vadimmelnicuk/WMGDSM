@@ -84,7 +84,12 @@ public class FragmentModules extends Fragment {
 
                         if (!Main.affectivaHelper.detector.isRunning()) {
                             Main.affectivaHelper.detector.start();
-                            Main.affectivaHelper.fragmentOn();
+                            if(Main.displayData) {
+                                Main.affectivaHelper.fragmentOn();
+                                if(Main.displayCamera) {
+                                    Main.affectivaHelper.cameraOn();
+                                }
+                            }
                             Main.modulesAffectivaConnected = true;
                             modulesAffectivaButton.setText("Connected");
                             modulesAffectivaIndicator.setImageResource(R.drawable.circle_green);

@@ -19,13 +19,13 @@ public class DbDsmHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "dsm.db";
 
+    public static final String TABLE_SESSION = "sessions";
+
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_TIMESTAMP = "timestamp";
     public static final String COLUMN_MODULES_EMPATICAE4 = "empaticaE4";
     public static final String COLUMN_MODULES_POLARH7 = "polarH7";
     public static final String COLUMN_MODULES_AFFECTIVA = "affectiva";
-
-    public static final String TABLE_SESSION = "sessions";
 
     private static final String SQL_CREATE_SESSION_TABLE = "CREATE TABLE " + TABLE_SESSION + " (" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

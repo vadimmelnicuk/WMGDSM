@@ -269,12 +269,13 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/affectiva_face_tracking"
             android:orientation="vertical"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_below="@+id/affectiva_emotions"
-            android:layout_toRightOf="@+id/affectiva_expressions"
-            android:layout_marginTop="10dp" >
+            android:layout_toRightOf="@+id/affectiva_expressions" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -284,31 +285,76 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/affectiva_face_distance"
+                android:id="@+id/affectiva_face_distance_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/face_distance"
+                android:text="@string/face_distance_label"
                 android:textSize="@dimen/fragment_modules_font_size" />
 
             <TextView
-                android:id="@+id/affectiva_face_orientation_pitch"
+                android:id="@+id/affectiva_face_orientation_pitch_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/face_orientation_pitch"
+                android:text="@string/face_orientation_pitch_label"
                 android:textSize="@dimen/fragment_modules_font_size" />
 
             <TextView
-                android:id="@+id/affectiva_face_orientation_roll"
+                android:id="@+id/affectiva_face_orientation_roll_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/face_orientation_roll"
+                android:text="@string/face_orientation_roll_label"
                 android:textSize="@dimen/fragment_modules_font_size" />
 
             <TextView
-                android:id="@+id/affectiva_face_orientation_yaw"
+                android:id="@+id/affectiva_face_orientation_yaw_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/face_orientation_yaw"
+                android:text="@string/face_orientation_yaw_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/affectiva_face_tracking"
+            android:layout_toRightOf="@+id/affectiva_expressions">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/demographics_label"
+                android:textSize="@dimen/fragment_modules_font_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/affectiva_gender_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gender_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_age_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/age_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_ethnicity_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ethnicity_label"
+                android:textSize="@dimen/fragment_modules_font_size" />
+
+            <TextView
+                android:id="@+id/affectiva_glasses_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/glasses_label"
                 android:textSize="@dimen/fragment_modules_font_size" />
 
         </LinearLayout>

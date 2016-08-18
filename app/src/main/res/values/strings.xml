@@ -21,6 +21,7 @@
     <string name="expressions_label">Expressions</string>
     <string name="emotions_label">Emotions</string>
     <string name="face_tracking_label">Face tracking</string>
+    <string name="demographics_label">Demographics and other</string>
 
     <string name="attention_label">Attention: -</string>
     <string name="brow_furrow_label">Brow furrow: -</string>
@@ -54,10 +55,15 @@
     <string name="sadness_label">Sadness: -</string>
     <string name="suprise_label">Surprise: -</string>
 
-    <string name="face_distance">Distance: -</string>
-    <string name="face_orientation_pitch">Pitch: -</string>
-    <string name="face_orientation_roll">Roll: -</string>
-    <string name="face_orientation_yaw">Yaw: -</string>
+    <string name="face_distance_label">Distance: -</string>
+    <string name="face_orientation_pitch_label">Pitch: -</string>
+    <string name="face_orientation_roll_label">Roll: -</string>
+    <string name="face_orientation_yaw_label">Yaw: -</string>
+
+    <string name="gender_label">Gender: -</string>
+    <string name="age_label">Age: -</string>
+    <string name="ethnicity_label">Ethnicity: -</string>
+    <string name="glasses_label">Glasses: -</string>
 
     <string name="button_connect">Connect</string>
     <string name="button_reset">Reset</string>
