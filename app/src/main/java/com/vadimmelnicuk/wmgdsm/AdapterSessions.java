@@ -39,6 +39,7 @@ public class AdapterSessions extends CursorAdapter {
         final String date = DateFormat.format("yyyyy-MM-dd HH:mm:ss", cal).toString();
         timestamp.setText(date);
 
+        final int sessionSyncData = cursor.getInt(cursor.getColumnIndexOrThrow(DbDsmHelper.COLUMN_SYNCDATA));
         final int sessionModuleEmpaticaE4 = cursor.getInt(cursor.getColumnIndexOrThrow(DbDsmHelper.COLUMN_MODULES_EMPATICAE4));
         final int sessionModulePolarH7 = cursor.getInt(cursor.getColumnIndexOrThrow(DbDsmHelper.COLUMN_MODULES_POLARH7));
         final int sessionModuleAffectiva = cursor.getInt(cursor.getColumnIndexOrThrow(DbDsmHelper.COLUMN_MODULES_AFFECTIVA));
@@ -49,22 +50,26 @@ public class AdapterSessions extends CursorAdapter {
             @Override
             public void onClick(View view) {
                 view.setEnabled(false);
-                if(sessionModuleEmpaticaE4 != 0) {
-                    Log.e("data", "empatica stuff was exported");
-                    Main.empaticaDb.exportAcceleration(sessionTimestamp);
-                    Main.empaticaDb.exportTemperature(sessionTimestamp);
-                    Main.empaticaDb.exportBVP(sessionTimestamp);
-                    Main.empaticaDb.exportIBI(sessionTimestamp);
-                    Main.empaticaDb.exportGSR(sessionTimestamp);
-                }
-                if(sessionModulePolarH7 != 0) {
-                    Log.e("data", "polar stuff was exported");
-                    Main.polarDb.exportBPM(sessionTimestamp);
-                    Main.polarDb.exportIBI(sessionTimestamp);
-                }
-                if(sessionModuleAffectiva != 0) {
-                    Log.e("data", "affectiva stuff was exported");
-
+                if(sessionSyncData != 0) {
+                    Main.dsmDb.exportSyncData(sessionTimestamp);
+                } else {
+                    if(sessionModuleEmpaticaE4 != 0) {
+                        Log.e("data", "empatica stuff was exported");
+                        Main.empaticaDb.exportAcceleration(sessionTimestamp);
+                        Main.empaticaDb.exportTemperature(sessionTimestamp);
+                        Main.empaticaDb.exportBVP(sessionTimestamp);
+                        Main.empaticaDb.exportIBI(sessionTimestamp);
+                        Main.empaticaDb.exportGSR(sessionTimestamp);
+                    }
+                    if(sessionModulePolarH7 != 0) {
+                        Log.e("data", "polar stuff was exported");
+                        Main.polarDb.exportBPM(sessionTimestamp);
+                        Main.polarDb.exportIBI(sessionTimestamp);
+                    }
+                    if(sessionModuleAffectiva != 0) {
+                        Log.e("data", "affectiva stuff was exported");
+                        Main.affectivaDb.exportData(sessionTimestamp);
+                    }
                 }
                 view.setEnabled(true);
                 Toast.makeText(view.getContext(), "Session from " + date + " was exported", Toast.LENGTH_SHORT).show();

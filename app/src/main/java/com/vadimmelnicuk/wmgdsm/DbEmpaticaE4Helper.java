@@ -41,7 +41,7 @@ public class DbEmpaticaE4Helper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ACCELERATION_TABLE = "CREATE TABLE " + TABLE_ACCELERATION + " (" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_SESSION + " INTEGER NOT NULL, " +
-            COLUMN_TIMESTAMP + " DOUBLE NOT NULL, " +
+            COLUMN_TIMESTAMP + " REAL NOT NULL, " +
             COLUMN_X + " INTEGER NOT NULL, " +
             COLUMN_Y + " INTEGER NOT NULL, " +
             COLUMN_Z + " INTEGER NOT NULL" +
@@ -50,29 +50,29 @@ public class DbEmpaticaE4Helper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_TEMPERATURE_TABLE = "CREATE TABLE " + TABLE_TEMPERATURE + " (" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_SESSION + " INTEGER NOT NULL, " +
-            COLUMN_TIMESTAMP + " DOUBLE NOT NULL, " +
-            COLUMN_TEMPERATURE + " FLOAT NOT NULL" +
+            COLUMN_TIMESTAMP + " REAL NOT NULL, " +
+            COLUMN_TEMPERATURE + " REAL NOT NULL" +
             ");";
 
     private static final String SQL_CREATE_BVP_TABLE = "CREATE TABLE " + TABLE_BVP + " (" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_SESSION + " INTEGER NOT NULL, " +
-            COLUMN_TIMESTAMP + " DOUBLE NOT NULL, " +
-            COLUMN_BVP + " FLOAT NOT NULL" +
+            COLUMN_TIMESTAMP + " REAL NOT NULL, " +
+            COLUMN_BVP + " REAL NOT NULL" +
             ");";
 
     private static final String SQL_CREATE_IBI_TABLE = "CREATE TABLE " + TABLE_IBI + " (" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_SESSION + " INTEGER NOT NULL, " +
-            COLUMN_TIMESTAMP + " DOUBLE NOT NULL, " +
-            COLUMN_IBI + " FLOAT NOT NULL" +
+            COLUMN_TIMESTAMP + " REAL NOT NULL, " +
+            COLUMN_IBI + " REAL NOT NULL" +
             ");";
 
     private static final String SQL_CREATE_GSR_TABLE = "CREATE TABLE " + TABLE_GSR + " (" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_SESSION + " INTEGER NOT NULL, " +
-            COLUMN_TIMESTAMP + " DOUBLE NOT NULL, " +
-            COLUMN_GSR + " FLOAT NOT NULL" +
+            COLUMN_TIMESTAMP + " REAL NOT NULL, " +
+            COLUMN_GSR + " REAL NOT NULL" +
             ");";
 
     public DbEmpaticaE4Helper(Context context) {

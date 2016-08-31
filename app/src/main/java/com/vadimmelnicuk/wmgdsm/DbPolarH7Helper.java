@@ -41,7 +41,7 @@ public class DbPolarH7Helper extends SQLiteOpenHelper {
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_SESSION + " INTEGER NOT NULL, " +
             COLUMN_TIMESTAMP + " INTEGER NOT NULL, " +
-            COLUMN_RR + " DOUBLE NOT NULL" +
+            COLUMN_RR + " REAL NOT NULL" +
             ");";
 
     public DbPolarH7Helper(Context context) {

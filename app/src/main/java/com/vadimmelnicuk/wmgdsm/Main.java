@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +29,7 @@ public class Main extends AppCompatActivity {
     public static DbDsmHelper dsmDb;
     public static DbEmpaticaE4Helper empaticaDb;
     public static DbPolarH7Helper polarDb;
+    public static DbAffectivaHelper affectivaDb;
 
     // States
     public static boolean modulesEmpaticaE4 = false;
@@ -84,6 +84,9 @@ public class Main extends AppCompatActivity {
             affectivaHelper = new HelperAffectiva(getApplicationContext());
             affectivaHelper.init();
         }
+
+        // Delete sessions
+//        dsmDb.dropDb(getApplicationContext());
     }
 
     @Override
@@ -178,7 +181,15 @@ public class Main extends AppCompatActivity {
                         updateImage(FragmentModules.modulesPolarH7Indicator, R.drawable.circle_red);
                     }
                     if(modulesAffectiva) {
-
+                        if(affectivaHelper.detector.isRunning()) {
+                            affectivaHelper.detector.stop();
+                            affectivaHelper.detector.reset();
+                        }
+                        toggleFragment(affectivaFragment, false);
+                        affectivaHelper.cameraOff();
+                        updateLabel(FragmentModules.modulesAffectivaButton, "Connect");
+                        updateButton(FragmentModules.modulesAffectivaButton, true);
+                        updateImage(FragmentModules.modulesAffectivaIndicator, R.drawable.circle_red);
                     }
                 } else {
                     if(modulesEmpaticaE4 || modulesPolarH7 || modulesAffectiva) {

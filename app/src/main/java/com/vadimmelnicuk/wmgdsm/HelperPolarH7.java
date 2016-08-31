@@ -39,6 +39,11 @@ public class HelperPolarH7 extends Main {
     public final static UUID HEART_RATE_SERVICE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
     public final static UUID HEART_RATE_MEASUREMENT = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
 
+    public static boolean BPMUpdated = false;
+    public static boolean IBIUpdated = false;
+    public static int BPM;
+    public static List<Double> IBIs = new ArrayList<Double>();
+
     HelperPolarH7(Context context) {
         mContext = context;
     }
@@ -169,8 +174,6 @@ public class HelperPolarH7 extends Main {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
             //read the characteristic data
-//            Log.i("Polar H7 byte", Arrays.toString(characteristic.getValue()));
-
             if(HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
                 int flag = characteristic.getProperties();
                 int BPMFormat;
@@ -188,19 +191,34 @@ public class HelperPolarH7 extends Main {
 
                 if(characteristic.getValue().length > 2) {
                     final int bpm = characteristic.getIntValue(BPMFormat, 1);
-//                    Log.i("Polar H7 BPM:", Integer.toString(bpm));
-                    updateLabel(FragmentPolarH7.bpmLabel, "BPM: " + bpm);
 
                     if(session_status) {
-                        polarDb.insertBPM(session_timestamp, currentTime, bpm);
+                        if(Main.syncData) {
+                            BPM = bpm;
+                            BPMUpdated = true;
+                        } else {
+                            polarDb.insertBPM(session_timestamp, currentTime, bpm);
+                        }
+                    }
+
+                    if(Main.displayData) {
+                        updateLabel(FragmentPolarH7.bpmLabel, "BPM: " + bpm);
                     }
 
                     for(int n = 2; n < characteristic.getValue().length; n += 2) {
                         final double rr = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 1+BPMOffset+n-2)/1024.0*1000.0;
-//                        Log.i("Polar H7 RR:", Double.toString(rr));
-                        updateLabel(FragmentPolarH7.ibiLabel, "IBI: " + String.format("%.02f", rr));
+
                         if(session_status) {
-                            polarDb.insertRR(session_timestamp, currentTime, rr);
+                            if(Main.syncData) {
+                                IBIs.add(rr);
+                                IBIUpdated = true;
+                            } else {
+                                polarDb.insertRR(session_timestamp, currentTime, rr);
+                            }
+                        }
+
+                        if(Main.displayData) {
+                            updateLabel(FragmentPolarH7.ibiLabel, "IBI: " + String.format("%.02f", rr));
                         }
                     }
                 }

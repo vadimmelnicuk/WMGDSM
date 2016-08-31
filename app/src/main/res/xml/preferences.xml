@@ -45,4 +45,9 @@
             android:key="pref_sync_data" />
 
     </PreferenceCategory>
+
+    <Preference
+        android:title="Save"
+        android:key="pref_save" />
+
 </PreferenceScreen>

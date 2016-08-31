@@ -27,12 +27,16 @@ public class HelperAffectiva extends Main implements Detector.ImageListener, Cam
     private int previewHeight = 60;
     private int frameRate = 24;
 
+    public static boolean faceUpdated;
+    public static Face face;
+
     HelperAffectiva(Context context) {
         mContext = context;
     }
 
     public void init() {
         // Database init
+        affectivaDb = new DbAffectivaHelper(mContext);
 
         // Helper init
         cameraPreview = Main.cameraView;
@@ -62,25 +66,39 @@ public class HelperAffectiva extends Main implements Detector.ImageListener, Cam
         Main.cameraView.setAlpha(1);
     }
 
+    public void cameraOff() {
+        ViewGroup.LayoutParams params = Main.cameraView.getLayoutParams();
+        params.width = 1;
+        params.height = 1;
+        Main.cameraView.setLayoutParams(params);
+        Main.cameraView.setAlpha(0);
+    }
+
     @Override
     public void onImageResults(List<Face> list, Frame frame, float timestamp) {
         if (list == null) {
-            updateLabel(FragmentAffectiva.DeviceNameLabel, "Affectiva - No frame present");
+            if(Main.displayData) {
+                updateLabel(FragmentAffectiva.DeviceNameLabel, "Affectiva - No frame present");
+            }
             return;
         }
         if (list.size() == 0) {
-            updateLabel(FragmentAffectiva.DeviceNameLabel, "Affectiva - No face detected");
+            if(Main.displayData) {
+                updateLabel(FragmentAffectiva.DeviceNameLabel, "Affectiva - No face detected");
+            }
         } else {
-            updateLabel(FragmentAffectiva.DeviceNameLabel, "Affectiva - Face was detected");
-            Face face = list.get(0);
+            face = list.get(0);
 
-            //Appearance
-            Face.GENDER gender = face.appearance.getGender();
-            Face.AGE age = face.appearance.getAge();
-            Face.ETHNICITY ethnicity = face.appearance.getEthnicity();
-            Face.GLASSES glasses = face.appearance.getGlasses();
+            if(Main.session_status) {
+                if(Main.syncData) {
+                    faceUpdated = true;
+                } else {
+                    Main.affectivaDb.insertData(Main.session_timestamp, timestamp, face);
+                }
+            }
 
             if(Main.displayData) {
+                updateLabel(FragmentAffectiva.DeviceNameLabel, "Affectiva - Face was detected");
                 //Expressions
                 updateLabel(FragmentAffectiva.AttentionLabel, "Attention: " + String.format("%.02f", face.expressions.getAttention()));
                 updateLabel(FragmentAffectiva.BrowFurrowLabel, "Brow furrow: " + String.format("%.02f", face.expressions.getBrowFurrow()));
@@ -122,10 +140,10 @@ public class HelperAffectiva extends Main implements Detector.ImageListener, Cam
                 updateLabel(FragmentAffectiva.FaceOrientationYawLabel, "Yaw: " + String.format("%.02f", face.measurements.orientation.getYaw()));
 
                 //Demographics and other
-                updateLabel(FragmentAffectiva.GenderLabel, "Gender: " + gender);
-                updateLabel(FragmentAffectiva.AgeLabel, "Age: " + age);
-                updateLabel(FragmentAffectiva.EthnicityLabel, "Ethnicity: " + ethnicity);
-                updateLabel(FragmentAffectiva.GlassesLabel, "Glasses: " + glasses);
+                updateLabel(FragmentAffectiva.GenderLabel, "Gender: " + face.appearance.getGender());
+                updateLabel(FragmentAffectiva.AgeLabel, "Age: " + face.appearance.getAge());
+                updateLabel(FragmentAffectiva.EthnicityLabel, "Ethnicity: " + face.appearance.getEthnicity());
+                updateLabel(FragmentAffectiva.GlassesLabel, "Glasses: " + face.appearance.getGlasses());
             }
         }
     }

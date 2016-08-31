@@ -27,6 +27,19 @@ public class HelperEmpaticaE4 extends Main implements EmpaDataDelegate, EmpaStat
     public static EmpaDeviceManager deviceManager;
     private int REQUEST_ENABLE_BT = 1;
 
+    public static boolean BVPUpdated = false;
+    public static boolean IBIUpdated = false;
+    public static boolean GSRUpdated = false;
+    public static boolean temperatureUpdated = false;
+    public static boolean accelerationUpdated = false;
+    public static float BVP;
+    public static float IBI;
+    public static float GSR;
+    public static float temperature;
+    public static float accelerationX;
+    public static float accelerationY;
+    public static float accelerationZ;
+
     HelperEmpaticaE4(Context context) {
         mContext = context;
     }
@@ -108,48 +121,94 @@ public class HelperEmpaticaE4 extends Main implements EmpaDataDelegate, EmpaStat
 
     @Override
     public void didReceiveAcceleration(int x, int y, int z, double timestamp) {
-        updateLabel(FragmentEmpaticaE4.AccelerationXLabel, "x: " + x);
-        updateLabel(FragmentEmpaticaE4.AccelerationYLabel, "y: " + y);
-        updateLabel(FragmentEmpaticaE4.AccelerationZLabel, "z: " + z);
         if(Main.session_status) {
-            Main.empaticaDb.insertAcceleration(Main.session_timestamp, x, y, z, timestamp);
+            if(Main.syncData) {
+                accelerationX = x;
+                accelerationY = y;
+                accelerationZ = z;
+                accelerationUpdated = true;
+            } else {
+                Main.empaticaDb.insertAcceleration(Main.session_timestamp, x, y, z, timestamp);
+            }
+        }
+
+        if(Main.displayData) {
+            updateLabel(FragmentEmpaticaE4.AccelerationXLabel, "x: " + x);
+            updateLabel(FragmentEmpaticaE4.AccelerationYLabel, "y: " + y);
+            updateLabel(FragmentEmpaticaE4.AccelerationZLabel, "z: " + z);
         }
     }
 
     @Override
     public void didReceiveBatteryLevel(float battery, double timestamp) {
-        updateLabel(FragmentEmpaticaE4.BatteryLabel, String.format("Battery: %.0f %%", battery * 100));
+        if(Main.displayData) {
+            updateLabel(FragmentEmpaticaE4.BatteryLabel, String.format("Battery: %.0f %%", battery * 100));
+        }
     }
 
     @Override
     public void didReceiveBVP(float bvp, double timestamp) {
-        updateLabel(FragmentEmpaticaE4.bvpLabel, "BVP: " + String.format("%.03f", bvp));
         if(Main.session_status) {
-            Main.empaticaDb.insertBVP(Main.session_timestamp, bvp, timestamp);
+            if(Main.syncData) {
+                BVP = bvp;
+                BVPUpdated = true;
+                // Insert sync data at this point, because BVP is the highest frequency signal
+                Main.dsmDb.insertSyncData(Main.session_timestamp, timestamp);
+            } else {
+                Main.empaticaDb.insertBVP(Main.session_timestamp, bvp, timestamp);
+            }
+        }
+
+        if(Main.displayData) {
+            updateLabel(FragmentEmpaticaE4.bvpLabel, "BVP: " + String.format("%.03f", bvp));
         }
     }
 
     @Override
     public void didReceiveIBI(float ibi, double timestamp) {
-        updateLabel(FragmentEmpaticaE4.ibiLabel, "IBI: " + String.format("%.03f", ibi));
         if(Main.session_status) {
-            Main.empaticaDb.insertIBI(Main.session_timestamp, ibi, timestamp);
+            if(Main.syncData) {
+                IBI = ibi;
+                IBIUpdated = true;
+            } else {
+                Main.empaticaDb.insertIBI(Main.session_timestamp, ibi, timestamp);
+            }
+        }
+
+        if(Main.displayData) {
+            updateLabel(FragmentEmpaticaE4.ibiLabel, "IBI: " + String.format("%.03f", ibi));
         }
     }
 
     @Override
     public void didReceiveGSR(float gsr, double timestamp) {
-        updateLabel(FragmentEmpaticaE4.edaLabel, "EDA: " + String.format("%.03f", gsr));
         if(Main.session_status) {
-            Main.empaticaDb.insertGSR(Main.session_timestamp, gsr, timestamp);
+            if(Main.syncData) {
+                GSR = gsr;
+                GSRUpdated = true;
+            } else {
+                Main.empaticaDb.insertGSR(Main.session_timestamp, gsr, timestamp);
+            }
+        }
+
+        if(Main.displayData) {
+            updateLabel(FragmentEmpaticaE4.edaLabel, "EDA: " + String.format("%.03f", gsr));
         }
     }
 
     @Override
-    public void didReceiveTemperature(float temperature, double timestamp) {
-        updateLabel(FragmentEmpaticaE4.temperatureLabel, "Temperature: " + String.format("%.03f", temperature));
+    public void didReceiveTemperature(float temp, double timestamp) {
         if(Main.session_status) {
-            Main.empaticaDb.insertTemperature(Main.session_timestamp, temperature, timestamp);
+            if(Main.syncData) {
+                temperature = temp;
+                temperatureUpdated = true;
+            } else {
+                Main.empaticaDb.insertTemperature(Main.session_timestamp, temperature, timestamp);
+            }
+        }
+
+        if(Main.displayData) {
+            updateLabel(FragmentEmpaticaE4.temperatureLabel, "Temperature: " + String.format("%.03f", temperature));
         }
     }
 }
