@@ -44,10 +44,20 @@
             android:defaultValue="false"
             android:key="pref_sync_data" />
 
+        <Preference
+            android:title="Delete data"
+            android:key="pref_delete_data" />
+
     </PreferenceCategory>
 
-    <Preference
-        android:title="Save"
-        android:key="pref_save" />
+    <PreferenceCategory
+        android:key="pref_controls">
+
+        <Preference
+            android:title="Save"
+            android:key="pref_save" />
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

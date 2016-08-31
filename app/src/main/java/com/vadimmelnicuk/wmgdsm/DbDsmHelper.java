@@ -91,8 +91,6 @@ public class DbDsmHelper extends SQLiteOpenHelper {
     public static final String COLUMN_FACEORIENTATIONROLL = "faceOrientationRoll";
     public static final String COLUMN_FACEORIENTATIONYAW = "faceOrientationYaw";
 
-    public static final String EMPTY_DATA_PLACEHOLDER = "-";
-
     private static final String SQL_CREATE_SESSION_TABLE = "CREATE TABLE " + TABLE_SESSION + " (" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_TIMESTAMP + " INTEGER NOT NULL, " +

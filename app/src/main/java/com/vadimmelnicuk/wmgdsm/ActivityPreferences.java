@@ -34,6 +34,17 @@ public class ActivityPreferences extends AppCompatActivity {
                     return true;
                 }
             });
+
+            Preference deleteDataButton = (Preference) getPreferenceManager().findPreference("pref_delete_data");
+            deleteDataButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference arg) {
+                    // TODO - finish drop db for all databases
+                    Main.dsmDb.dropDb(getActivity().getApplicationContext());
+                    Main.dsmDb = new DbDsmHelper(getActivity().getApplicationContext());
+                    return true;
+                }
+            });
         }
     }
 
