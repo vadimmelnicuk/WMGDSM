@@ -3,6 +3,7 @@
     <string name="menu_toolbar_action_settings">Settings</string>
 
     <string name="app_name">WMG DSM</string>
+    <string name="app_version">v1.0</string>
     <string name="empatica_api_key">190f51e2d6c145af90426afebf6dcb3b</string>
     <string name="polarH7_id">449A8E1E</string>
 
@@ -73,5 +74,6 @@
 
     <string name="settings_devices_label">Devices</string>
 
-    <string name="footer">©2016 WMG, University of Warwick\nDeveloped by Vadim Melnicuk</string>
+    <!-- TODO - get version referenced -->
+    <string name="footer">WMG DSM v1.0 \nDeveloped by Vadim Melnicuk \n©2016 WMG, University of Warwick</string>
 </resources>
