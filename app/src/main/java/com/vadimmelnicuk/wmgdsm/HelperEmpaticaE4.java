@@ -109,8 +109,10 @@ public class HelperEmpaticaE4 extends Main implements EmpaDataDelegate, EmpaStat
                     Main.modulesEmpaticaE4Connected = true;
                     updateLabel(FragmentModules.modulesEmpaticaE4Button, "Connected");
                     updateImage(FragmentModules.modulesEmpaticaE4Indicator, R.drawable.circle_green);
-                    updateLabel(FragmentEmpaticaE4.DeviceNameLabel, String.format(empaticaE4Name));
-                    toggleFragment(Main.empaticaE4Fragment, true);
+                    if(Main.displayData) {
+                        updateLabel(FragmentEmpaticaE4.DeviceNameLabel, String.format(empaticaE4Name));
+                        toggleFragment(Main.empaticaE4Fragment, true);
+                    }
                 }
             });
             // The device manager disconnected from a device
@@ -203,12 +205,12 @@ public class HelperEmpaticaE4 extends Main implements EmpaDataDelegate, EmpaStat
                 temperature = temp;
                 temperatureUpdated = true;
             } else {
-                Main.empaticaDb.insertTemperature(Main.session_timestamp, temperature, timestamp);
+                Main.empaticaDb.insertTemperature(Main.session_timestamp, temp, timestamp);
             }
         }
 
         if(Main.displayData) {
-            updateLabel(FragmentEmpaticaE4.temperatureLabel, "Temperature: " + String.format("%.03f", temperature));
+            updateLabel(FragmentEmpaticaE4.temperatureLabel, "Temperature: " + String.format("%.03f", temp));
         }
     }
 }

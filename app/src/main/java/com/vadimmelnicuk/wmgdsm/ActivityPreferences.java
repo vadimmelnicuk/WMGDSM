@@ -1,5 +1,6 @@
 package com.vadimmelnicuk.wmgdsm;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -40,8 +41,11 @@ public class ActivityPreferences extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceClick(Preference arg) {
                     // TODO - finish drop db for all databases
-                    Main.dsmDb.dropDb(getActivity().getApplicationContext());
-                    Main.dsmDb = new DbDsmHelper(getActivity().getApplicationContext());
+                    Context context = getActivity().getApplicationContext();
+                    Main.dsmDb.dropDb(context);
+                    Main.empaticaDb.dropDb(context);
+                    Main.polarDb.dropDb(context);
+                    Main.affectivaDb.dropDb(context);
                     return true;
                 }
             });
