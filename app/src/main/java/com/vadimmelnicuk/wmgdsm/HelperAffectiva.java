@@ -25,7 +25,7 @@ public class HelperAffectiva extends Main implements Detector.ImageListener, Cam
     private SurfaceView cameraPreview;
     private int previewWidth = 50;
     private int previewHeight = 60;
-    private int frameRate = 24;
+    private int frameRate = 12;
 
     public static boolean faceUpdated;
     public static Face face;

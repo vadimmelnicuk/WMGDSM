@@ -130,7 +130,9 @@ public class HelperPolarH7 extends Main {
                     modulesPolarH7Connected = true;
                     updateLabel(FragmentModules.modulesPolarH7Button, "Connected");
                     updateImage(FragmentModules.modulesPolarH7Indicator, R.drawable.circle_green);
-                    toggleFragment(polarH7Fragment, true);
+                    if(Main.displayData) {
+                        toggleFragment(polarH7Fragment, true);
+                    }
                     gatt.discoverServices();
                     break;
                 case BluetoothProfile.STATE_DISCONNECTED:
