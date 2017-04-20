@@ -55,7 +55,6 @@ public class HelperPolarH7 extends Main {
         BLEManager = (BluetoothManager) mContext.getSystemService(mContext.getApplicationContext().BLUETOOTH_SERVICE);
         BLEAdapter = BLEManager.getAdapter();
 
-
         if (BLEAdapter != null || BLEAdapter.isEnabled()) {
             BLEScanner = BLEAdapter.getBluetoothLeScanner();
             BLEScanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();

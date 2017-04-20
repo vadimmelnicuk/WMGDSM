@@ -18,6 +18,8 @@
     <string name="empty_text">-</string>
     <string name="temperature_label">Temperature: -</string>
     <string name="battery_label">Battery: -</string>
+    <string name="rmssd30_label">RMSSD 30s: -</string>
+    <string name="rmssd120_label">RMSSD 120s: -</string>
 
     <string name="expressions_label">Expressions</string>
     <string name="emotions_label">Emotions</string>
@@ -67,6 +69,7 @@
     <string name="glasses_label">Glasses: -</string>
 
     <string name="button_connect">Connect</string>
+    <string name="button_start">Start</string>
     <string name="button_reset">Reset</string>
     <string name="button_save">Save</string>
     <string name="button_start_session">Start Session</string>
@@ -75,5 +78,5 @@
     <string name="settings_devices_label">Devices</string>
 
     <!-- TODO - get version referenced -->
-    <string name="footer">WMG DSM v1.0 \nDeveloped by Vadim Melnicuk \n©2016 WMG, University of Warwick</string>
+    <string name="footer">WMG DSM v1.2 \nDeveloped by Vadim Melnicuk \n©2017 WMG, University of Warwick</string>
 </resources>

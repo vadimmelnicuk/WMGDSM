@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.empatica.empalink.ConnectionNotAllowedException;
@@ -118,6 +119,8 @@ public class HelperEmpaticaE4 extends Main implements EmpaDataDelegate, EmpaStat
             // The device manager disconnected from a device
         } else if (status == EmpaStatus.DISCONNECTED) {
             //Hide data if device was disconnected
+            Log.d("Empatica", "Reconnecting...");
+//            deviceManager.startScanning();
         }
     }
 

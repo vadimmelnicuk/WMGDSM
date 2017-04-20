@@ -14,7 +14,8 @@
         android:id="@+id/modules_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:text="Modules" />
 
     <RelativeLayout
         android:id="@+id/modules_empaticaE4"
@@ -83,6 +84,31 @@
             android:textSize="10dp"
             android:minHeight="0dp"
             android:minWidth="0dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/modules_hrv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/modules_hrv_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/circle_red" />
+
+        <TextView
+            android:id="@+id/modules_hrv_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="HRV Analysis" />
 
     </RelativeLayout>
 

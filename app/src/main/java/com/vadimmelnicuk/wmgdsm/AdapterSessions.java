@@ -37,19 +37,18 @@ public class AdapterSessions extends CursorAdapter {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(sessionTimestamp);
         final String date = DateFormat.format("yyyyy-MM-dd HH:mm:ss", cal).toString();
-        timestamp.setText(date);
+        timestamp.setText("Session: " + date);
 
         final int sessionSyncData = cursor.getInt(cursor.getColumnIndexOrThrow(DbDsmHelper.COLUMN_SYNCDATA));
         final int sessionModuleEmpaticaE4 = cursor.getInt(cursor.getColumnIndexOrThrow(DbDsmHelper.COLUMN_MODULES_EMPATICAE4));
         final int sessionModulePolarH7 = cursor.getInt(cursor.getColumnIndexOrThrow(DbDsmHelper.COLUMN_MODULES_POLARH7));
         final int sessionModuleAffectiva = cursor.getInt(cursor.getColumnIndexOrThrow(DbDsmHelper.COLUMN_MODULES_AFFECTIVA));
 
-        Button exportButton = (Button) view.findViewById(R.id.export_button);
+        final Button exportButton = (Button) view.findViewById(R.id.export_button);
 
         exportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setEnabled(false);
                 if(sessionSyncData != 0) {
                     Main.dsmDb.exportSyncData(sessionTimestamp);
                 } else {
@@ -71,7 +70,6 @@ public class AdapterSessions extends CursorAdapter {
                         Main.affectivaDb.exportData(sessionTimestamp);
                     }
                 }
-                view.setEnabled(true);
                 Toast.makeText(view.getContext(), "Session from " + date + " was exported", Toast.LENGTH_SHORT).show();
             }
         });

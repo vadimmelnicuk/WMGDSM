@@ -9,7 +9,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -67,12 +69,20 @@
                 android:layout_below="@+id/fragment_empaticae4" />
 
             <fragment
+                android:id="@+id/fragment_hrv"
+                android:name="com.vadimmelnicuk.wmgdsm.FragmentHRV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/fragment_polarh7" />
+
+            <fragment
                 android:id="@+id/fragment_affectiva"
                 android:name="com.vadimmelnicuk.wmgdsm.FragmentAffectiva"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_below="@+id/fragment_polarh7" />
+                android:layout_below="@+id/fragment_hrv" />
 
             <SurfaceView
                 android:id="@+id/camera_view"
@@ -114,5 +124,60 @@
             android:text="@string/button_reset" />
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/nback"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_material_dark">
+
+        <TextView
+            android:id="@+id/nback_type_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="25dp"
+            android:text="type"
+            android:textSize="30dp"
+            android:textColor="#cccccc" />
+
+        <ImageView
+            android:id="@+id/nback_circle"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="90dp"
+            android:background="@drawable/circle_grey" />
+
+        <TextView
+            android:id="@+id/nback_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:text="n"
+            android:textSize="300dp" />
+
+        <TextView
+            android:id="@+id/nback_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="25dp"
+            android:text="result"
+            android:textSize="30dp" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/HMIImage"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
 
 </RelativeLayout>

@@ -1,31 +1,42 @@
 package com.vadimmelnicuk.wmgdsm;
 
+import android.animation.Animator;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
+
+import org.w3c.dom.Text;
 
 public class Main extends AppCompatActivity {
 
     public static SharedPreferences preferences;
     public static boolean session_status = false;
-    public static long session_timestamp;
+    public static long session_timestamp = 0;
 
     // Helpers
     public static HelperEmpaticaE4 empaticaE4Helper;
     public static HelperPolarH7 polarH7Helper;
     public static HelperAffectiva affectivaHelper;
+    public static HelperHRV hrvHelper;
+    public static HelperNBack nbackHelper;
     public static DbDsmHelper dsmDb;
     public static DbEmpaticaE4Helper empaticaDb;
     public static DbPolarH7Helper polarDb;
@@ -38,6 +49,10 @@ public class Main extends AppCompatActivity {
     public static boolean modulesPolarH7Connected = false;
     public static boolean modulesAffectiva = false;
     public static boolean modulesAffectivaConnected = false;
+    public static boolean modulesHRV = false;
+    public static boolean modulesHRVConnected = false;
+    public static boolean modulesNBack = false;
+    public static boolean modulesNBackConnected = false;
     public static boolean displayData = false;
     public static boolean displayCamera = false;
     public static boolean syncData = false;
@@ -46,10 +61,27 @@ public class Main extends AppCompatActivity {
     public static Fragment empaticaE4Fragment;
     public static Fragment polarH7Fragment;
     public static Fragment affectivaFragment;
+    public static Fragment hrvFragment;
     public static SurfaceView cameraView;
     public static TextView sessionLabel;
     public static Button sessionControlButton;
     public static Button resetButton;
+    public static ImageView HMIImage;
+    public static RelativeLayout nbackLayout;
+    public static TextView nbackLabel;
+    public static TextView nbackTypeLabel;
+    public static ImageView nbackCircle;
+    public static TextView nbackResult;
+
+    // Bitmaps
+    public static Drawable HMIEmpty;
+    public static Drawable HMIAutonomousModeEngaged;
+    public static Drawable HMIInfrontCar;
+    public static Drawable HMIRightArrow;
+    public static Drawable HMIRightArrowTurn;
+    public static Drawable HMISwerve;
+
+    // n back
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +95,18 @@ public class Main extends AppCompatActivity {
         // Load button listeners
         loadButtonListeners();
 
+        // Load bitmaps
+        loadBitMaps();
+
         // DSM main database init
         dsmDb = new DbDsmHelper(getApplicationContext());
 
-        // Hide unused fragments
+        // Hide all fragments
         toggleFragment(empaticaE4Fragment, false);
         toggleFragment(polarH7Fragment, false);
         toggleFragment(affectivaFragment, false);
+        toggleFragment(hrvFragment, false);
+//        toggleRelativeLayout(nbackLayout, false);
 
         // Init modules
         if(modulesEmpaticaE4) {
@@ -84,9 +121,14 @@ public class Main extends AppCompatActivity {
             affectivaHelper = new HelperAffectiva(getApplicationContext());
             affectivaHelper.init();
         }
-
-        // Delete sessions
-//        dsmDb.dropDb(getApplicationContext());
+        if(modulesHRV) {
+            hrvHelper = new HelperHRV(getApplicationContext());
+            hrvHelper.init();
+        }
+        if(modulesNBack) {
+            nbackHelper = new HelperNBack(getApplicationContext());
+            nbackHelper.init();
+        }
     }
 
     @Override
@@ -120,22 +162,48 @@ public class Main extends AppCompatActivity {
         if(modulesAffectiva) {
 
         }
+        if(modulesHRV) {
+
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(modulesEmpaticaE4) {
-            empaticaE4Helper.deviceManager.disconnect();
-        }
-        if(modulesPolarH7) {
-            polarH7Helper.disconnect();
-        }
-        if(modulesAffectiva) {
-            if(affectivaHelper.detector.isRunning()) {
-                affectivaHelper.detector.stop();
-                affectivaHelper.detector.reset();
-            }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_1:
+                if(HMIImage.getVisibility() == View.VISIBLE) {
+                    HMIImage.setVisibility(View.GONE);
+                } else {
+                    HMIImage.setImageDrawable(HMIAutonomousModeEngaged);
+                    HMIImage.setVisibility(View.VISIBLE);
+                }
+                return true;
+            case KeyEvent.KEYCODE_2:
+                HMIImage.setImageDrawable(HMIInfrontCar);
+                return true;
+            case KeyEvent.KEYCODE_3:
+                AnimationDrawable animation = new AnimationDrawable();
+                animation.addFrame(HMIRightArrowTurn, 500);
+                animation.addFrame(HMIRightArrow, 500);
+                animation.addFrame(HMIRightArrowTurn, 500);
+                animation.addFrame(HMIRightArrow, 500);
+                animation.addFrame(HMIRightArrowTurn, 500);
+                animation.addFrame(HMIRightArrow, 500);
+                animation.addFrame(HMIRightArrowTurn, 500);
+                animation.addFrame(HMIRightArrow, 500);
+                animation.addFrame(HMISwerve, 5000);
+                animation.addFrame(HMIEmpty, 10000);
+                animation.setOneShot(true);
+                HMIImage.setImageDrawable(animation);
+                animation.start();
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -145,6 +213,8 @@ public class Main extends AppCompatActivity {
         modulesEmpaticaE4 = preferences.getBoolean("pref_modules_empaticaE4", false);
         modulesPolarH7 = preferences.getBoolean("pref_modules_polarH7", false);
         modulesAffectiva = preferences.getBoolean("pref_modules_affectiva", false);
+        modulesHRV = preferences.getBoolean("pref_hrv_analysis", false);
+        modulesNBack = preferences.getBoolean("pref_modules_nback", false);
         displayData = preferences.getBoolean("pref_display_data", false);
         displayCamera = preferences.getBoolean("pref_display_camera", false);
         syncData = preferences.getBoolean("pref_sync_data", false);
@@ -153,10 +223,17 @@ public class Main extends AppCompatActivity {
         empaticaE4Fragment = getFragmentManager().findFragmentById(R.id.fragment_empaticae4);
         polarH7Fragment = getFragmentManager().findFragmentById(R.id.fragment_polarh7);
         affectivaFragment = getFragmentManager().findFragmentById(R.id.fragment_affectiva);
+        hrvFragment = getFragmentManager().findFragmentById(R.id.fragment_hrv);
         cameraView = (SurfaceView) findViewById(R.id.camera_view);
         sessionLabel = (TextView) findViewById(R.id.session_label);
         sessionControlButton = (Button) findViewById(R.id.session_control);
         resetButton = (Button) findViewById(R.id.resetButton);
+        HMIImage = (ImageView) findViewById(R.id.HMIImage);
+        nbackLayout = (RelativeLayout) findViewById(R.id.nback);
+        nbackLabel = (TextView) findViewById(R.id.nback_label);
+        nbackTypeLabel = (TextView) findViewById(R.id.nback_type_label);
+        nbackCircle = (ImageView) findViewById(R.id.nback_circle);
+        nbackResult = (TextView) findViewById(R.id.nback_result);
     }
 
     private void loadButtonListeners() {
@@ -191,9 +268,13 @@ public class Main extends AppCompatActivity {
                         updateButton(FragmentModules.modulesAffectivaButton, true);
                         updateImage(FragmentModules.modulesAffectivaIndicator, R.drawable.circle_red);
                     }
+                    if(modulesHRV) {
+                        hrvHelper.stopTimer();
+                        toggleFragment(hrvFragment, false);
+                    }
                 } else {
                     if(modulesEmpaticaE4 || modulesPolarH7 || modulesAffectiva) {
-                        boolean modulesEmpaticaE4Ready, modulesPolarH7Ready, modulesAffectivaReady;
+                        boolean modulesEmpaticaE4Ready, modulesPolarH7Ready, modulesAffectivaReady, modulesHRVReady;
 
                         if(modulesEmpaticaE4) {
                             modulesEmpaticaE4Ready = modulesEmpaticaE4Connected;
@@ -213,7 +294,16 @@ public class Main extends AppCompatActivity {
                             modulesAffectivaReady = true;
                         }
 
-                        if(modulesEmpaticaE4Ready && modulesPolarH7Ready && modulesAffectivaReady) {
+                        if(modulesHRV) {
+                            modulesHRVReady = modulesHRVConnected;
+                            if(Main.displayData && modulesPolarH7Connected) {
+                                toggleFragment(hrvFragment, true);
+                            }
+                        } else {
+                            modulesHRVReady = true;
+                        }
+
+                        if(modulesEmpaticaE4Ready && modulesPolarH7Ready && modulesAffectivaReady && modulesHRVReady) {
                             initSession();
                         } else {
                             Toast.makeText(Main.this, "Please connect all the modules from the list", Toast.LENGTH_SHORT).show();
@@ -228,10 +318,39 @@ public class Main extends AppCompatActivity {
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("Reset", "RESET");
+
+                session_status = false;
+
+                if(modulesEmpaticaE4) {
+                    empaticaE4Helper.deviceManager.disconnect();
+                }
+                if(modulesPolarH7) {
+                    polarH7Helper.disconnect();
+                }
+                if(modulesAffectiva) {
+                    if(affectivaHelper.detector.isRunning()) {
+                        affectivaHelper.detector.stop();
+                        affectivaHelper.detector.reset();
+                    }
+                }
+                if(modulesHRV) {
+                    hrvHelper.stopTimer();
+                }
+
                 finish();
                 startActivity(getIntent());
             }
         });
+    }
+
+    private void loadBitMaps() {
+        HMIEmpty = getDrawable(R.drawable.hmi_empty);
+        HMIAutonomousModeEngaged = getDrawable(R.drawable.hmi_autonomous_mode_engaged);
+        HMIInfrontCar = getDrawable(R.drawable.hmi_infront_car);
+        HMIRightArrow = getDrawable(R.drawable.hmi_right_arrow);
+        HMIRightArrowTurn = getDrawable(R.drawable.hmi_right_arrow_turn);
+        HMISwerve = getDrawable(R.drawable.hmi_swerve);
     }
 
     private void initSession() {
@@ -300,6 +419,19 @@ public class Main extends AppCompatActivity {
                     fragment.getView().setVisibility(View.VISIBLE);
                 } else {
                     fragment.getView().setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    public void toggleRelativeLayout(final RelativeLayout layout, final boolean sh) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(sh) {
+                    layout.setVisibility(View.VISIBLE);
+                } else {
+                    layout.setVisibility(View.GONE);
                 }
             }
         });

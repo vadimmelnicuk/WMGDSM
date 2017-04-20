@@ -23,11 +23,21 @@
             android:defaultValue="false"
             android:key="pref_modules_affectiva" />
 
+        <CheckBoxPreference
+            android:title="N-Back Task"
+            android:defaultValue="false"
+            android:key="pref_modules_nback" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="Data"
         android:key="pref_data">
+
+        <CheckBoxPreference
+            android:title="HRV analysis"
+            android:defaultValue="false"
+            android:key="pref_hrv_analysis" />
 
         <CheckBoxPreference
             android:title="Display data"

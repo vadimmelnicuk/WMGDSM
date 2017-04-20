@@ -13,6 +13,8 @@ import com.opencsv.CSVWriter;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -34,6 +36,7 @@ public class DbDsmHelper extends SQLiteOpenHelper {
     public static final String COLUMN_MODULES_EMPATICAE4 = "empaticaE4";
     public static final String COLUMN_MODULES_POLARH7 = "polarH7";
     public static final String COLUMN_MODULES_AFFECTIVA = "affectiva";
+    public static final String COLUMN_MODULES_HRV = "hrv";
 
     // Empatica E4 data
     public static final String COLUMN_X = "x";
@@ -91,13 +94,17 @@ public class DbDsmHelper extends SQLiteOpenHelper {
     public static final String COLUMN_FACEORIENTATIONROLL = "faceOrientationRoll";
     public static final String COLUMN_FACEORIENTATIONYAW = "faceOrientationYaw";
 
+    public static final String COLUMN_RMSSD30 = "rmssd30";
+    public static final String COLUMN_RMSSD120 = "rmssd120";
+
     private static final String SQL_CREATE_SESSION_TABLE = "CREATE TABLE " + TABLE_SESSION + " (" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_TIMESTAMP + " INTEGER NOT NULL, " +
             COLUMN_SYNCDATA + " INTEGER DEFAULT 0, " +
             COLUMN_MODULES_EMPATICAE4 + " INTEGER DEFAULT 0, " +
             COLUMN_MODULES_POLARH7 + " INTEGER DEFAULT 0, " +
-            COLUMN_MODULES_AFFECTIVA + " INTEGER DEFAULT 0" +
+            COLUMN_MODULES_AFFECTIVA + " INTEGER DEFAULT 0," +
+            COLUMN_MODULES_HRV + " INTEGER DEFAULT 0" +
             ");";
 
     private static final String SQL_CREATE_SYNCDATA_TABLE = "CREATE TABLE " + TABLE_SYNCDATA + " (" +
@@ -153,7 +160,10 @@ public class DbDsmHelper extends SQLiteOpenHelper {
             COLUMN_FACEDISTANCE + " TEXT, " +
             COLUMN_FACEORIENTATIONPITCH + " TEXT, " +
             COLUMN_FACEORIENTATIONROLL + " TEXT, " +
-            COLUMN_FACEORIENTATIONYAW + " TEXT" +
+            COLUMN_FACEORIENTATIONYAW + " TEXT," +
+            // HRV Analysis data
+            COLUMN_RMSSD30 + " TEXT," +
+            COLUMN_RMSSD120 + " TEXT" +
             ");";
 
     public DbDsmHelper(Context context) {
@@ -186,6 +196,7 @@ public class DbDsmHelper extends SQLiteOpenHelper {
         values.put(COLUMN_MODULES_EMPATICAE4, Boolean.compare(Main.modulesEmpaticaE4, false));
         values.put(COLUMN_MODULES_POLARH7, Boolean.compare(Main.modulesPolarH7, false));
         values.put(COLUMN_MODULES_AFFECTIVA, Boolean.compare(Main.modulesAffectiva, false));
+        values.put(COLUMN_MODULES_HRV, Boolean.compare(Main.modulesHRV, false));
 
         long sessionId = db.insert(TABLE_SESSION, null, values);
         long session = getSessionTimestamp(sessionId);
@@ -301,6 +312,11 @@ public class DbDsmHelper extends SQLiteOpenHelper {
             values.put(COLUMN_FACEORIENTATIONYAW, Main.affectivaHelper.face.measurements.orientation.getYaw());
             Main.affectivaHelper.faceUpdated = false;
         }
+        if(Main.hrvHelper.RMSSDUpdated) {
+            values.put(COLUMN_RMSSD30, Main.hrvHelper.RMSSD30);
+            values.put(COLUMN_RMSSD120, Main.hrvHelper.RMSSD120);
+            Main.hrvHelper.RMSSDUpdated = false;
+        }
 
         db.insert(TABLE_SYNCDATA, null, values);
     }
@@ -316,7 +332,7 @@ public class DbDsmHelper extends SQLiteOpenHelper {
             file.createNewFile();
             CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
             SQLiteDatabase db = this.getReadableDatabase();
-            Cursor curCSV = db.rawQuery("SELECT * FROM " + TABLE_SYNCDATA + " WHERE session = ?", new String[] {String.valueOf(session)});
+            Cursor curCSV = db.rawQuery("SELECT * FROM " + TABLE_SYNCDATA + " WHERE " + COLUMN_SESSION + " = ?", new String[] {String.valueOf(session)});
             csvWrite.writeNext(curCSV.getColumnNames());
             while(curCSV.moveToNext()) {
                 //Which column you want to export
@@ -371,8 +387,11 @@ public class DbDsmHelper extends SQLiteOpenHelper {
                         curCSV.getString(47),
                         curCSV.getString(48),
                         curCSV.getString(49),
+                        curCSV.getString(50), // RMSSD30
+                        curCSV.getString(51), // RMSSD120
                 };
                 csvWrite.writeNext(arrStr);
+
             }
             csvWrite.close();
             curCSV.close();
@@ -380,5 +399,21 @@ public class DbDsmHelper extends SQLiteOpenHelper {
         catch(Exception sqlEx) {
             Log.e("MainActivity", sqlEx.getMessage(), sqlEx);
         }
+    }
+
+    public ArrayList<Long> getRRSample(final long session, final long timestamp, final long sampleSize) {
+        ArrayList<Long> rrs = new ArrayList<>();
+        long timestampDiff = timestamp - (1000*sampleSize);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM " + TABLE_SYNCDATA + " WHERE " + COLUMN_SESSION + " = ? AND " + COLUMN_TIMESTAMP + " > ? AND " + COLUMN_RR + " > 0", new String[] {String.valueOf(session), String.valueOf(timestampDiff)});
+        if(cur.getCount() > 0) {
+            while(cur.moveToNext()) {
+                rrs.add(cur.getLong(11));
+            }
+        }
+        cur.close();
+//        Log.d("HRV", "RRs Array: " + rrs.toString());
+        return rrs;
     }
 }

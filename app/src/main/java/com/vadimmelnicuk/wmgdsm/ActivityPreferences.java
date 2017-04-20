@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -40,12 +39,20 @@ public class ActivityPreferences extends AppCompatActivity {
             deleteDataButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference arg) {
-                    // TODO - finish drop db for all databases
                     Context context = getActivity().getApplicationContext();
                     Main.dsmDb.dropDb(context);
-                    Main.empaticaDb.dropDb(context);
-                    Main.polarDb.dropDb(context);
-                    Main.affectivaDb.dropDb(context);
+
+                    if(Main.modulesEmpaticaE4) {
+                        Main.empaticaDb.dropDb(context);
+                    }
+                    if(Main.modulesPolarH7) {
+                        Main.polarDb.dropDb(context);
+                    }
+                    if(Main.modulesAffectiva) {
+                        Main.affectivaDb.dropDb(context);
+                    }
+
+                    getActivity().finish();
                     return true;
                 }
             });

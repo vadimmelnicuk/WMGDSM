@@ -19,9 +19,11 @@ public class FragmentModules extends Fragment {
     private RelativeLayout modulesEmpaticaE4Layout;
     private RelativeLayout modulesPolarH7Layout;
     private RelativeLayout modulesAffectivaLayout;
+    private RelativeLayout modulesHRVLayout;
     public static ImageView modulesEmpaticaE4Indicator;
     public static ImageView modulesPolarH7Indicator;
     public static ImageView modulesAffectivaIndicator;
+    public static ImageView modulesHRVIndicator;
     public static Button modulesEmpaticaE4Button;
     public static Button modulesPolarH7Button;
     public static Button modulesAffectivaButton;
@@ -40,15 +42,18 @@ public class FragmentModules extends Fragment {
         modulesEmpaticaE4Layout = (RelativeLayout) getView().findViewById(R.id.modules_empaticaE4);
         modulesPolarH7Layout = (RelativeLayout) getView().findViewById(R.id.modules_polarH7);
         modulesAffectivaLayout = (RelativeLayout) getView().findViewById(R.id.modules_affectiva);
+        modulesHRVLayout = (RelativeLayout) getView().findViewById(R.id.modules_hrv);
+
         modulesEmpaticaE4Indicator = (ImageView) getView().findViewById(R.id.modules_empaticaE4_indicator);
         modulesPolarH7Indicator = (ImageView) getView().findViewById(R.id.modules_polarH7_indicator);
         modulesAffectivaIndicator = (ImageView) getView().findViewById(R.id.modules_affectiva_indicator);
+        modulesHRVIndicator = (ImageView) getView().findViewById(R.id.modules_hrv_indicator);
+
         modulesEmpaticaE4Button = (Button) getView().findViewById(R.id.modules_empaticaE4_button);
         modulesPolarH7Button = (Button) getView().findViewById(R.id.modules_polarH7_button);
         modulesAffectivaButton = (Button) getView().findViewById(R.id.modules_affectiva_button);
 
         if(Main.modulesEmpaticaE4 || Main.modulesPolarH7 || Main.modulesAffectiva) {
-            modulesLabel.setText("Modules");
             if(Main.modulesEmpaticaE4) {
                 modulesEmpaticaE4Button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -97,6 +102,12 @@ public class FragmentModules extends Fragment {
                     }
                 });
                 modulesAffectivaLayout.setVisibility(View.VISIBLE);
+            }
+            if(Main.modulesHRV) {
+                Main.modulesHRVConnected = true;
+                Main.hrvHelper.startTimer();
+                modulesHRVIndicator.setImageResource(R.drawable.circle_green);
+                modulesHRVLayout.setVisibility(View.VISIBLE);
             }
         } else {
             modulesLabel.setText("Please select some modules in the settings section.");

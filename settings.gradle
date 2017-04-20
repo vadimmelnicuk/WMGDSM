@@ -1,1 +1,1 @@
-include ':app', ':empalink-2.0', ':opencsv-3.8'
+include ':app', ':opencsv-3.8', ':empalink-2.1', ':pocketsphinx-android-5prealpha-nolib'
