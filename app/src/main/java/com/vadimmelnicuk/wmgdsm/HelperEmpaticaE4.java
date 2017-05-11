@@ -119,6 +119,7 @@ public class HelperEmpaticaE4 extends Main implements EmpaDataDelegate, EmpaStat
             // The device manager disconnected from a device
         } else if (status == EmpaStatus.DISCONNECTED) {
             //Hide data if device was disconnected
+        } else if (status == EmpaStatus.DISCONNECTING) {
             Log.d("Empatica", "Reconnecting...");
 //            deviceManager.startScanning();
         }

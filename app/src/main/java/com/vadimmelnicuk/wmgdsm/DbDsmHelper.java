@@ -413,7 +413,7 @@ public class DbDsmHelper extends SQLiteOpenHelper {
             }
         }
         cur.close();
-//        Log.d("HRV", "RRs Array: " + rrs.toString());
+        Log.d("HRV", "RRs Array: " + rrs.toString());
         return rrs;
     }
 }

@@ -40,6 +40,11 @@
             android:text="@string/ibi_label"
             android:textSize="@dimen/fragment_modules_font_size"/>
 
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/rr_graph"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
     </LinearLayout>
 
 </LinearLayout>

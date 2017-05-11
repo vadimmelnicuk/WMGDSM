@@ -7,6 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 /**
  * Created by vadimmelnicuk on 16/08/16.
  */
@@ -15,6 +19,9 @@ public class FragmentPolarH7 extends Fragment {
     public static TextView DeviceNameLabel;
     public static TextView bpmLabel;
     public static TextView ibiLabel;
+    public static GraphView rrGraph;
+    public static LineGraphSeries<DataPoint> rrGraphSeries = new LineGraphSeries<>();
+    public static int graphWidth = 50;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,5 +36,12 @@ public class FragmentPolarH7 extends Fragment {
         DeviceNameLabel = (TextView) getView().findViewById(R.id.device_name);
         bpmLabel = (TextView) getView().findViewById(R.id.bpm_label);
         ibiLabel = (TextView) getView().findViewById(R.id.ibi_label);
+        rrGraph = (GraphView) getView().findViewById(R.id.rr_graph);
+
+        rrGraphSeries.setAnimated(false);
+        rrGraph.getGridLabelRenderer().setTextSize(20f);
+        rrGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        rrGraph.getViewport().setXAxisBoundsManual(true);
+        rrGraph.addSeries(rrGraphSeries);
     }
 }

@@ -1,6 +1,7 @@
 package com.vadimmelnicuk.wmgdsm;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +21,10 @@ public class FragmentHRV extends Fragment {
     public static TextView DeviceNameLabel;
     public static TextView rmssd30Label;
     public static TextView rmssd120Label;
-    public static GraphView rmssd30Graph;
+    public static GraphView rmssdGraph;
     public static LineGraphSeries<DataPoint> rmssd30GraphSeries = new LineGraphSeries<>();
-    public static int rmssd30GraphWidth = 50;
+    public static LineGraphSeries<DataPoint> rmssd120GraphSeries = new LineGraphSeries<>();
+    public static int graphWidth = 50;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,12 +39,15 @@ public class FragmentHRV extends Fragment {
         DeviceNameLabel = (TextView) getView().findViewById(R.id.device_name);
         rmssd30Label = (TextView) getView().findViewById(R.id.rmssd30_label);
         rmssd120Label = (TextView) getView().findViewById(R.id.rmssd120_label);
-        rmssd30Graph = (GraphView) getView().findViewById(R.id.rmssd30_graph);
+        rmssdGraph = (GraphView) getView().findViewById(R.id.rmssd30_graph);
 
-        rmssd30Graph.getGridLabelRenderer().setTextSize(20f);
-        rmssd30Graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-        rmssd30Graph.getViewport().setXAxisBoundsManual(true);
-        rmssd30GraphSeries.setAnimated(true);
-        rmssd30Graph.addSeries(rmssd30GraphSeries);
+        rmssd30GraphSeries.setAnimated(false);
+        rmssd120GraphSeries.setAnimated(false);
+        rmssd120GraphSeries.setColor(Color.YELLOW);
+        rmssdGraph.getGridLabelRenderer().setTextSize(20f);
+        rmssdGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        rmssdGraph.getViewport().setXAxisBoundsManual(true);
+        rmssdGraph.addSeries(rmssd30GraphSeries);
+        rmssdGraph.addSeries(rmssd120GraphSeries);
     }
 }

@@ -106,7 +106,7 @@ public class Main extends AppCompatActivity {
         toggleFragment(polarH7Fragment, false);
         toggleFragment(affectivaFragment, false);
         toggleFragment(hrvFragment, false);
-//        toggleRelativeLayout(nbackLayout, false);
+        toggleRelativeLayout(nbackLayout, false);
 
         // Init modules
         if(modulesEmpaticaE4) {
@@ -129,6 +129,8 @@ public class Main extends AppCompatActivity {
             nbackHelper = new HelperNBack(getApplicationContext());
             nbackHelper.init();
         }
+
+        Log.d("APP STATE", "Init complete");
     }
 
     @Override
@@ -340,6 +342,7 @@ public class Main extends AppCompatActivity {
 
                 finish();
                 startActivity(getIntent());
+
             }
         });
     }

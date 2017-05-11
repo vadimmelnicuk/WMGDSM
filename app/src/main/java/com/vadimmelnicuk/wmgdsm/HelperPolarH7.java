@@ -18,6 +18,8 @@ import android.content.Context;
 import android.os.ParcelUuid;
 import android.util.Log;
 
+import com.jjoe64.graphview.series.DataPoint;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -39,10 +41,14 @@ public class HelperPolarH7 extends Main {
     public final static UUID HEART_RATE_SERVICE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
     public final static UUID HEART_RATE_MEASUREMENT = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
 
-    public static boolean BPMUpdated = false;
-    public static boolean IBIUpdated = false;
+    public static boolean BPMUpdated;
+    public static boolean IBIUpdated;
     public static int BPM;
-    public static List<Double> IBIs = new ArrayList<Double>();
+    public static ArrayList<Double> IBIs;
+    public static ArrayList<RRObject> RRs;
+    public static double cleanRR;
+
+    private long mCounter;
 
     HelperPolarH7(Context context) {
         mContext = context;
@@ -51,6 +57,8 @@ public class HelperPolarH7 extends Main {
     public void init() {
         // Database init
         polarDb = new DbPolarH7Helper(mContext);
+
+        initVariables();
 
         BLEManager = (BluetoothManager) mContext.getSystemService(mContext.getApplicationContext().BLUETOOTH_SERVICE);
         BLEAdapter = BLEManager.getAdapter();
@@ -62,6 +70,16 @@ public class HelperPolarH7 extends Main {
             BLEFilters = new ArrayList<ScanFilter>();
             BLEFilters.add(0, filter);
         }
+
+        Log.d("APP STATE", Integer.toString(RRs.size()));
+    }
+
+    private void initVariables() {
+        BPMUpdated = false;
+        IBIUpdated = false;
+        IBIs = new ArrayList<>();
+        RRs = new ArrayList<>();
+        mCounter = 1;
     }
 
     public void disconnect() {
@@ -179,7 +197,6 @@ public class HelperPolarH7 extends Main {
                 int flag = characteristic.getProperties();
                 int BPMFormat;
                 int BPMOffset;
-
                 long currentTime = System.currentTimeMillis();
 
                 if((flag & 1) != 0) {
@@ -209,17 +226,36 @@ public class HelperPolarH7 extends Main {
                     for(int n = 2; n < characteristic.getValue().length; n += 2) {
                         final double rr = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 1+BPMOffset+n-2)/1024.0*1000.0;
 
+                        if(RRs.size() > 10) {
+                            Main.hrvHelper.filterRR(rr, currentTime);
+                            cleanRR = RRs.get(RRs.size()-2).getRR();
+                        } else {
+                            RRs.add(new RRObject(rr, currentTime, 0));
+                            cleanRR = RRs.get(RRs.size()-1).getRR();
+                        }
+
                         if(session_status) {
                             if(Main.syncData) {
-                                IBIs.add(rr);
+                                IBIs.add(cleanRR);
                                 IBIUpdated = true;
                             } else {
-                                polarDb.insertRR(session_timestamp, currentTime, rr);
+                                polarDb.insertRR(session_timestamp, currentTime, cleanRR);
                             }
                         }
 
                         if(Main.displayData) {
-                            updateLabel(FragmentPolarH7.ibiLabel, "IBI: " + String.format("%.02f", rr));
+                            updateLabel(FragmentPolarH7.ibiLabel, "IBI: " + String.format("%.02f", cleanRR));
+
+                            mCounter += 1;
+                            FragmentPolarH7.rrGraph.getViewport().setMinX(mCounter-FragmentPolarH7.graphWidth);
+                            FragmentPolarH7.rrGraph.getViewport().setMaxX(mCounter);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    FragmentPolarH7.rrGraphSeries.appendData(new DataPoint(mCounter, cleanRR), true, FragmentPolarH7.graphWidth);
+                                }
+                            });
                         }
                     }
                 }
