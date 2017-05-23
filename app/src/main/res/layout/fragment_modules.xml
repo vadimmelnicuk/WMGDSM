@@ -147,4 +147,39 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/modules_pi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/modules_pi_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/circle_red" />
+
+        <TextView
+            android:id="@+id/modules_pi_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:text="Raspberry Pi" />
+
+        <Button
+            android:id="@+id/modules_pi_button"
+            android:enabled="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/button_connect"
+            android:textSize="10dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp" />
+
+    </RelativeLayout>
+
 </LinearLayout>

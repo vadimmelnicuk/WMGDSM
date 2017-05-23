@@ -1,6 +1,7 @@
 package com.vadimmelnicuk.wmgdsm;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +40,9 @@ public class FragmentPolarH7 extends Fragment {
         rrGraph = (GraphView) getView().findViewById(R.id.rr_graph);
 
         rrGraphSeries.setAnimated(false);
+        rrGraphSeries.setColor(Color.rgb(79, 195, 247));
         rrGraph.getGridLabelRenderer().setTextSize(20f);
+        rrGraph.getGridLabelRenderer().setLabelVerticalWidth(50);
         rrGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         rrGraph.getViewport().setXAxisBoundsManual(true);
         rrGraph.addSeries(rrGraphSeries);

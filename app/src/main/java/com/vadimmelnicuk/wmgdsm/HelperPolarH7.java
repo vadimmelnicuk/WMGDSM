@@ -70,8 +70,6 @@ public class HelperPolarH7 extends Main {
             BLEFilters = new ArrayList<ScanFilter>();
             BLEFilters.add(0, filter);
         }
-
-        Log.d("APP STATE", Integer.toString(RRs.size()));
     }
 
     private void initVariables() {
@@ -244,7 +242,7 @@ public class HelperPolarH7 extends Main {
                         }
 
                         if(Main.displayData) {
-                            updateLabel(FragmentPolarH7.ibiLabel, "IBI: " + String.format("%.02f", cleanRR));
+                            updateLabel(FragmentPolarH7.ibiLabel, "IBI: " + String.format("%.03f", cleanRR));
 
                             mCounter += 1;
                             FragmentPolarH7.rrGraph.getViewport().setMinX(mCounter-FragmentPolarH7.graphWidth);

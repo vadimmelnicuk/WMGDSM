@@ -28,6 +28,11 @@
             android:defaultValue="false"
             android:key="pref_modules_nback" />
 
+        <CheckBoxPreference
+            android:title="Raspberry Pi"
+            android:defaultValue="false"
+            android:key="pref_modules_pi" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

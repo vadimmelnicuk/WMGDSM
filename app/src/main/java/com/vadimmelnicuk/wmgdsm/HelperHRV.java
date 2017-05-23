@@ -22,10 +22,13 @@ public class HelperHRV extends Main {
     private long DELAY = 1000; // one second moving window
     private long mCounter;
     private boolean mClean;
+    private final static boolean DISPLAY_LOGS = true;
 
     public static double RMSSD30;
     public static double RMSSD120;
     public static boolean RMSSDUpdated;
+
+    public static ArrayList<Double[]> fs;
 
     HelperHRV(Context context) {
         mContext = context;
@@ -43,6 +46,7 @@ public class HelperHRV extends Main {
         RMSSD30 = 0;
         RMSSD120 = 0;
         RMSSDUpdated = false;
+        fs = new ArrayList<>();
     }
 
     private void initThread() {
@@ -87,35 +91,35 @@ public class HelperHRV extends Main {
         RRObject RRm1 = Main.polarH7Helper.RRs.get(Main.polarH7Helper.RRs.size()-1);    // RRs(n-1)
         RRObject RRm2 = Main.polarH7Helper.RRs.get(Main.polarH7Helper.RRs.size()-2);    // RRs(n-2)
 
-        Log.d("HRV", "Thresholds TB: " + tb + " TT: " + tt + " ****** RR: " + rr + " RR0: " + RRm1.getRR() + " t" + RRm1.getFiltered() + " RR1: " + RRm2.getRR() + " t" + RRm2.getFiltered());
+        if(DISPLAY_LOGS) Log.d("HRV", "Thresholds TB: " + tb + " TT: " + tt + " ****** RR: " + rr + " RR0: " + RRm1.getRR() + " t" + RRm1.getFiltered() + " RR1: " + RRm2.getRR() + " t" + RRm2.getFiltered());
 
         if(mClean == false) {
             if(RRm1.getRR() < tb && rr > tt) {
-                Log.e("HRV", "Extopic beat");
+                if(DISPLAY_LOGS) Log.e("HRV", "Extopic beat");
                 Main.polarH7Helper.RRs.set(Main.polarH7Helper.RRs.size()-1, new RRObject(mean, RRm1.getTimestamp(), 2));
                 filteredRR = rr + RRm1.getRR() - mean;
             } else if(RRm1.getRR() < 0.75*RRm2.getRR() && rr < 0.75*RRm2.getRR()) {
                 // Changing condition to AND, because OR might cause an error during abrupt transition between high and low workload tasks
-                Log.e("HRV", "Wrong detection");
+                if(DISPLAY_LOGS) Log.e("HRV", "Wrong detection");
                 Main.polarH7Helper.RRs.remove(Main.polarH7Helper.RRs.size()-1);
                 filteredRR = rr + RRm1.getRR();
             } else if(rr >= 2*RRm2.getRR()) {
                 // Changing
-                Log.e("HRV", "Missed detection");
+                if(DISPLAY_LOGS) Log.e("HRV", "Missed detection");
                 Main.polarH7Helper.RRs.add(new RRObject(mean, timestamp-1000, 3));
                 filteredRR = rr - mean;
             } else {
-                Log.e("HRV", "Passed error check");
+                if(DISPLAY_LOGS) Log.e("HRV", "Passed error check");
                 Main.polarH7Helper.RRs.set(Main.polarH7Helper.RRs.size()-1, new RRObject(RRm1.getRR(), RRm1.getTimestamp(), 0));
             }
             mClean = true;
         }
 
         if(filteredRR < tb) {
-            Log.e("HRV", "RR: " + filteredRR + " below TB of " + tb);
+            if(DISPLAY_LOGS) Log.e("HRV", "RR: " + filteredRR + " below TB of " + tb);
             mClean = false;
         } else if (filteredRR > tt) {
-            Log.e("HRV", "RR: " + filteredRR + " above TT of " + tt);
+            if(DISPLAY_LOGS) Log.e("HRV", "RR: " + filteredRR + " above TT of " + tt);
             mClean = false;
         }
 
@@ -150,6 +154,9 @@ public class HelperHRV extends Main {
         if(session_status && currentTime >= session_timestamp+5000) {
             RMSSD30 = calculateRMSSD(getRRSample(currentTime, 30));
             RMSSD120 = calculateRMSSD(getRRSample(currentTime, 120));
+
+            LombScargle ls = new LombScargle(getRRSample(currentTime, 30));
+            fs = ls.calculate();
 
             if(Main.syncData) {
                 RMSSDUpdated = true;

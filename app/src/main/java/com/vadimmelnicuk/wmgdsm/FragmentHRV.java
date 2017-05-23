@@ -43,8 +43,10 @@ public class FragmentHRV extends Fragment {
 
         rmssd30GraphSeries.setAnimated(false);
         rmssd120GraphSeries.setAnimated(false);
-        rmssd120GraphSeries.setColor(Color.YELLOW);
+        rmssd30GraphSeries.setColor(Color.rgb(79, 195, 247));
+        rmssd120GraphSeries.setColor(Color.rgb(255, 241, 118));
         rmssdGraph.getGridLabelRenderer().setTextSize(20f);
+        rmssdGraph.getGridLabelRenderer().setLabelVerticalWidth(50);
         rmssdGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         rmssdGraph.getViewport().setXAxisBoundsManual(true);
         rmssdGraph.addSeries(rmssd30GraphSeries);

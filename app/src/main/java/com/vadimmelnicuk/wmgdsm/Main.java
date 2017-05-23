@@ -1,7 +1,7 @@
 package com.vadimmelnicuk.wmgdsm;
 
-import android.animation.Animator;
 import android.app.Fragment;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,8 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
-
-import org.w3c.dom.Text;
 
 public class Main extends AppCompatActivity {
 
@@ -37,6 +34,7 @@ public class Main extends AppCompatActivity {
     public static HelperAffectiva affectivaHelper;
     public static HelperHRV hrvHelper;
     public static HelperNBack nbackHelper;
+    public static HelperPi piHelper;
     public static DbDsmHelper dsmDb;
     public static DbEmpaticaE4Helper empaticaDb;
     public static DbPolarH7Helper polarDb;
@@ -53,6 +51,8 @@ public class Main extends AppCompatActivity {
     public static boolean modulesHRVConnected = false;
     public static boolean modulesNBack = false;
     public static boolean modulesNBackConnected = false;
+    public static boolean modulesPi = false;
+    public static boolean modulesPiConnected = false;
     public static boolean displayData = false;
     public static boolean displayCamera = false;
     public static boolean syncData = false;
@@ -128,6 +128,12 @@ public class Main extends AppCompatActivity {
         if(modulesNBack) {
             nbackHelper = new HelperNBack(getApplicationContext());
             nbackHelper.init();
+        }
+        if(modulesPi) {
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            startActivityForResult(discoverableIntent, 0x1);
+            piHelper = new HelperPi(getApplicationContext());
+            piHelper.init();
         }
 
         Log.d("APP STATE", "Init complete");
@@ -217,6 +223,7 @@ public class Main extends AppCompatActivity {
         modulesAffectiva = preferences.getBoolean("pref_modules_affectiva", false);
         modulesHRV = preferences.getBoolean("pref_hrv_analysis", false);
         modulesNBack = preferences.getBoolean("pref_modules_nback", false);
+        modulesPi = preferences.getBoolean("pref_modules_pi", false);
         displayData = preferences.getBoolean("pref_display_data", false);
         displayCamera = preferences.getBoolean("pref_display_camera", false);
         syncData = preferences.getBoolean("pref_sync_data", false);
