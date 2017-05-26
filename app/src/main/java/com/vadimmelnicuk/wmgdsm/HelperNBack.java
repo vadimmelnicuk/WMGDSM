@@ -31,7 +31,6 @@ public class HelperNBack extends Main implements RecognitionListener {
     private static TimerTask mTimerTask;
     private static Timer mTimer;
     private Random randomGenerator = new Random();
-    private Ringtone ringtone;
     private static MediaPlayer mPlayer;
     private long mCounter = 1;
     private static SpeechRecognizer recognizer;
@@ -50,11 +49,7 @@ public class HelperNBack extends Main implements RecognitionListener {
         mPlayer = MediaPlayer.create(mContext, R.raw.beep);
         initRecognizer();
         initThread();
-        initTimers();
         updateLabel(nbackTypeLabel, nbackType + " back");
-        toggleRelativeLayout(nbackLayout, true);
-
-        startTimer();
     }
 
     private void initThread() {
@@ -105,7 +100,9 @@ public class HelperNBack extends Main implements RecognitionListener {
     }
 
     public void startTimer() {
+        initTimers();
         mTimer.scheduleAtFixedRate(mTimerTask, 0, nbackDelay);
+        toggleRelativeLayout(nbackLayout, true);
     }
 
     public void stopTimer() {

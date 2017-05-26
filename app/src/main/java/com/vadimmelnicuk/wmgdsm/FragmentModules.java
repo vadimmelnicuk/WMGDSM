@@ -1,6 +1,8 @@
 package com.vadimmelnicuk.wmgdsm;
 
 import android.app.Fragment;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,6 +124,8 @@ public class FragmentModules extends Fragment {
                 modulesPiButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+                        startActivityForResult(discoverableIntent, 0x1);
                         modulesPiButton.setEnabled(false);
                         modulesPiButton.setText("Waiting...");
                         Main.piHelper.accept();

@@ -109,6 +109,10 @@ public class Main extends AppCompatActivity {
         toggleRelativeLayout(nbackLayout, false);
 
         // Init modules
+        if(modulesPi) {
+            piHelper = new HelperPi(getApplicationContext());
+            piHelper.init();
+        }
         if(modulesEmpaticaE4) {
             empaticaE4Helper = new HelperEmpaticaE4(getApplicationContext());
             empaticaE4Helper.init();
@@ -128,12 +132,6 @@ public class Main extends AppCompatActivity {
         if(modulesNBack) {
             nbackHelper = new HelperNBack(getApplicationContext());
             nbackHelper.init();
-        }
-        if(modulesPi) {
-            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            startActivityForResult(discoverableIntent, 0x1);
-            piHelper = new HelperPi(getApplicationContext());
-            piHelper.init();
         }
 
         Log.d("APP STATE", "Init complete");

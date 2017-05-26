@@ -37,6 +37,7 @@ public class DbDsmHelper extends SQLiteOpenHelper {
     public static final String COLUMN_MODULES_POLARH7 = "polarH7";
     public static final String COLUMN_MODULES_AFFECTIVA = "affectiva";
     public static final String COLUMN_MODULES_HRV = "hrv";
+    public static final String COLUMN_MODULES_PI = "pi";
 
     // Empatica E4 data
     public static final String COLUMN_X = "x";
@@ -97,14 +98,55 @@ public class DbDsmHelper extends SQLiteOpenHelper {
     public static final String COLUMN_RMSSD30 = "rmssd30";
     public static final String COLUMN_RMSSD120 = "rmssd120";
 
+    public static final String COLUMN_SCENARIO_STATE = "scenarioState";
+    public static final String COLUMN_HEAD_LIGHT = "headLight";
+    public static final String COLUMN_BRAKE_LIGHT = "brakeLight";
+    public static final String COLUMN_REVERSE_LIGHT = "reverseLight";
+    public static final String COLUMN_FOG_LIGHT = "fogLight";
+    public static final String COLUMN_LEFT_INDICATOR = "leftIndicator";
+    public static final String COLUMN_RIGHT_INDICATOR = "rightIndicator";
+    public static final String COLUMN_HORN_ON = "hornOn";
+    public static final String COLUMN_ENGINE_ON = "engineOn";
+    public static final String COLUMN_WHEEL_SCREECHING = "wheelScreeching";
+    public static final String COLUMN_HI_BEAM = "hiBeam";
+    public static final String COLUMN_HAND_BRAKE = "handBrake";
+    public static final String COLUMN_POSITION_LATITUDE = "positionLatitude";
+    public static final String COLUMN_POSITION_LONGITUDE = "positionLongitude";
+    public static final String COLUMN_POSITION_ELEVATION = "positionElevation";
+    public static final String COLUMN_POSITION_X = "positionX";
+    public static final String COLUMN_POSITION_Y = "positionY";
+    public static final String COLUMN_POSITION_Z = "positionZ";
+    public static final String COLUMN_ORIENTATION_X = "orientationX";
+    public static final String COLUMN_ORIENTATION_Y = "orientationY";
+    public static final String COLUMN_ORIENTATION_Z = "orientationZ";
+    public static final String COLUMN_VELOCITY_X = "velocityX";
+    public static final String COLUMN_VELOCITY_Y = "velocityY";
+    public static final String COLUMN_VELOCITY_Z = "velocityZ";
+    public static final String COLUMN_ACCELERATION_X = "accelerationX";
+    public static final String COLUMN_ACCELERATION_Y = "accelerationY";
+    public static final String COLUMN_ACCELERATION_Z = "accelerationZ";
+    public static final String COLUMN_ANGULAR_VELOCITY_X = "angularVelocityX";
+    public static final String COLUMN_ANGULAR_VELOCITY_Y = "angularVelocityY";
+    public static final String COLUMN_ANGULAR_VELOCITY_Z = "angularVelocityZ";
+    public static final String COLUMN_STEERING_ANGLE = "steeringAngle";
+    public static final String COLUMN_RPM = "rpm";
+    public static final String COLUMN_ACCELERATOR_PEDAL = "acceleratorPedal";
+    public static final String COLUMN_BRAKE_PEDAL = "brakePedal";
+    public static final String COLUMN_CLUTCH_PEDAL = "clutchPedal";
+    public static final String COLUMN_STEERING_WHEEL_ANGLE = "steeringWheelAngle";
+    public static final String COLUMN_GEAR = "gear";
+
+
+
     private static final String SQL_CREATE_SESSION_TABLE = "CREATE TABLE " + TABLE_SESSION + " (" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_TIMESTAMP + " INTEGER NOT NULL, " +
             COLUMN_SYNCDATA + " INTEGER DEFAULT 0, " +
             COLUMN_MODULES_EMPATICAE4 + " INTEGER DEFAULT 0, " +
             COLUMN_MODULES_POLARH7 + " INTEGER DEFAULT 0, " +
-            COLUMN_MODULES_AFFECTIVA + " INTEGER DEFAULT 0," +
-            COLUMN_MODULES_HRV + " INTEGER DEFAULT 0" +
+            COLUMN_MODULES_AFFECTIVA + " INTEGER DEFAULT 0, " +
+            COLUMN_MODULES_HRV + " INTEGER DEFAULT 0," +
+            COLUMN_MODULES_PI + " INTEGER DEFAULT 0" +
             ");";
 
     private static final String SQL_CREATE_SYNCDATA_TABLE = "CREATE TABLE " + TABLE_SYNCDATA + " (" +
@@ -163,7 +205,45 @@ public class DbDsmHelper extends SQLiteOpenHelper {
             COLUMN_FACEORIENTATIONYAW + " TEXT," +
             // HRV Analysis data
             COLUMN_RMSSD30 + " TEXT," +
-            COLUMN_RMSSD120 + " TEXT" +
+            COLUMN_RMSSD120 + " TEXT," +
+            // Driving performance through HIL
+            COLUMN_SCENARIO_STATE + " TEXT," +
+            COLUMN_HEAD_LIGHT + " TEXT," +
+            COLUMN_BRAKE_LIGHT + " TEXT," +
+            COLUMN_REVERSE_LIGHT + " TEXT," +
+            COLUMN_FOG_LIGHT + " TEXT," +
+            COLUMN_LEFT_INDICATOR + " TEXT," +
+            COLUMN_RIGHT_INDICATOR + " TEXT," +
+            COLUMN_HORN_ON + " TEXT," +
+            COLUMN_ENGINE_ON + " TEXT," +
+            COLUMN_WHEEL_SCREECHING + " TEXT," +
+            COLUMN_HI_BEAM + " TEXT," +
+            COLUMN_HAND_BRAKE + " TEXT," +
+            COLUMN_POSITION_LATITUDE + " TEXT," +
+            COLUMN_POSITION_LONGITUDE + " TEXT," +
+            COLUMN_POSITION_ELEVATION + " TEXT," +
+            COLUMN_POSITION_X + " TEXT," +
+            COLUMN_POSITION_Y + " TEXT," +
+            COLUMN_POSITION_Z + " TEXT," +
+            COLUMN_ORIENTATION_X + " TEXT," +
+            COLUMN_ORIENTATION_Y + " TEXT," +
+            COLUMN_ORIENTATION_Z + " TEXT," +
+            COLUMN_VELOCITY_X + " TEXT," +
+            COLUMN_VELOCITY_Y + " TEXT," +
+            COLUMN_VELOCITY_Z + " TEXT," +
+            COLUMN_ACCELERATION_X + " TEXT," +
+            COLUMN_ACCELERATION_Y + " TEXT," +
+            COLUMN_ACCELERATION_Z + " TEXT," +
+            COLUMN_ANGULAR_VELOCITY_X + " TEXT," +
+            COLUMN_ANGULAR_VELOCITY_Y + " TEXT," +
+            COLUMN_ANGULAR_VELOCITY_Z + " TEXT," +
+            COLUMN_STEERING_ANGLE + " TEXT," +
+            COLUMN_RPM + " TEXT," +
+            COLUMN_ACCELERATOR_PEDAL + " TEXT," +
+            COLUMN_BRAKE_PEDAL + " TEXT," +
+            COLUMN_CLUTCH_PEDAL + " TEXT," +
+            COLUMN_STEERING_WHEEL_ANGLE + " TEXT," +
+            COLUMN_GEAR + " TEXT" +
             ");";
 
     public DbDsmHelper(Context context) {
@@ -197,6 +277,7 @@ public class DbDsmHelper extends SQLiteOpenHelper {
         values.put(COLUMN_MODULES_POLARH7, Boolean.compare(Main.modulesPolarH7, false));
         values.put(COLUMN_MODULES_AFFECTIVA, Boolean.compare(Main.modulesAffectiva, false));
         values.put(COLUMN_MODULES_HRV, Boolean.compare(Main.modulesHRV, false));
+        values.put(COLUMN_MODULES_PI, Boolean.compare(Main.modulesPi, false));
 
         long sessionId = db.insert(TABLE_SESSION, null, values);
         long session = getSessionTimestamp(sessionId);
@@ -317,6 +398,49 @@ public class DbDsmHelper extends SQLiteOpenHelper {
             values.put(COLUMN_RMSSD120, Main.hrvHelper.RMSSD120);
             Main.hrvHelper.RMSSDUpdated = false;
         }
+        if(Main.modulesPi) {
+            // Put scenario state outside of driving performance update condition so that it is recorded continuously
+            values.put(COLUMN_SCENARIO_STATE, Main.piHelper.scenarioState);
+        }
+        if(Main.piHelper.dpUpdated) {
+            values.put(COLUMN_HEAD_LIGHT, Main.piHelper.headLight);
+            values.put(COLUMN_BRAKE_LIGHT, Main.piHelper.brakeLight);
+            values.put(COLUMN_REVERSE_LIGHT, Main.piHelper.reverseLight);
+            values.put(COLUMN_FOG_LIGHT, Main.piHelper.fogLight);
+            values.put(COLUMN_LEFT_INDICATOR, Main.piHelper.leftIndicator);
+            values.put(COLUMN_RIGHT_INDICATOR, Main.piHelper.rightIndicator);
+            values.put(COLUMN_HORN_ON, Main.piHelper.hornOn);
+            values.put(COLUMN_ENGINE_ON, Main.piHelper.engineOn);
+            values.put(COLUMN_WHEEL_SCREECHING, Main.piHelper.wheelScreeching);
+            values.put(COLUMN_HI_BEAM, Main.piHelper.hiBeamOn);
+            values.put(COLUMN_HAND_BRAKE, Main.piHelper.handBrake);
+            values.put(COLUMN_POSITION_LATITUDE, Main.piHelper.positionLatitude);
+            values.put(COLUMN_POSITION_LONGITUDE, Main.piHelper.positionLongitude);
+            values.put(COLUMN_POSITION_ELEVATION, Main.piHelper.positionElevation);
+            values.put(COLUMN_POSITION_X, Main.piHelper.positionX);
+            values.put(COLUMN_POSITION_Y, Main.piHelper.positionY);
+            values.put(COLUMN_POSITION_Z, Main.piHelper.positionZ);
+            values.put(COLUMN_ORIENTATION_X, Main.piHelper.orientationX);
+            values.put(COLUMN_ORIENTATION_Y, Main.piHelper.orientationY);
+            values.put(COLUMN_ORIENTATION_Z, Main.piHelper.orientationZ);
+            values.put(COLUMN_VELOCITY_X, Main.piHelper.velocityX);
+            values.put(COLUMN_VELOCITY_Y, Main.piHelper.velocityY);
+            values.put(COLUMN_VELOCITY_Z, Main.piHelper.velocityZ);
+            values.put(COLUMN_ACCELERATION_X, Main.piHelper.accelerationX);
+            values.put(COLUMN_ACCELERATION_Y, Main.piHelper.accelerationY);
+            values.put(COLUMN_ACCELERATION_Z, Main.piHelper.accelerationZ);
+            values.put(COLUMN_ANGULAR_VELOCITY_X, Main.piHelper.angularVelocityX);
+            values.put(COLUMN_ANGULAR_VELOCITY_Y, Main.piHelper.angularVelocityY);
+            values.put(COLUMN_ANGULAR_VELOCITY_Z, Main.piHelper.angularVelocityZ);
+            values.put(COLUMN_STEERING_ANGLE, Main.piHelper.steeringAngle);
+            values.put(COLUMN_RPM, Main.piHelper.rpm);
+            values.put(COLUMN_ACCELERATOR_PEDAL, Main.piHelper.acceleratorPedal);
+            values.put(COLUMN_BRAKE_PEDAL, Main.piHelper.brakePedal);
+            values.put(COLUMN_CLUTCH_PEDAL, Main.piHelper.clutchPedal);
+            values.put(COLUMN_STEERING_WHEEL_ANGLE, Main.piHelper.steeringWheelAngle);
+            values.put(COLUMN_GEAR, Main.piHelper.gear);
+            Main.piHelper.dpUpdated = false;
+        }
 
         db.insert(TABLE_SYNCDATA, null, values);
     }
@@ -387,8 +511,45 @@ public class DbDsmHelper extends SQLiteOpenHelper {
                         curCSV.getString(47),
                         curCSV.getString(48),
                         curCSV.getString(49),
-                        curCSV.getString(50), // RMSSD30
-                        curCSV.getString(51), // RMSSD120
+                        curCSV.getString(50),   // RMSSD30
+                        curCSV.getString(51),   // RMSSD120
+                        curCSV.getString(52),   // COLUMN_SCENARIO_STATE
+                        curCSV.getString(53),
+                        curCSV.getString(54),
+                        curCSV.getString(55),
+                        curCSV.getString(56),
+                        curCSV.getString(57),
+                        curCSV.getString(58),
+                        curCSV.getString(59),
+                        curCSV.getString(60),
+                        curCSV.getString(61),
+                        curCSV.getString(62),
+                        curCSV.getString(63),
+                        curCSV.getString(64),
+                        curCSV.getString(65),
+                        curCSV.getString(66),
+                        curCSV.getString(67),
+                        curCSV.getString(68),
+                        curCSV.getString(69),
+                        curCSV.getString(70),
+                        curCSV.getString(71),
+                        curCSV.getString(72),
+                        curCSV.getString(73),
+                        curCSV.getString(74),
+                        curCSV.getString(75),
+                        curCSV.getString(76),
+                        curCSV.getString(77),
+                        curCSV.getString(78),
+                        curCSV.getString(79),
+                        curCSV.getString(80),
+                        curCSV.getString(81),
+                        curCSV.getString(82),
+                        curCSV.getString(83),
+                        curCSV.getString(84),
+                        curCSV.getString(85),
+                        curCSV.getString(86),
+                        curCSV.getString(87),
+                        curCSV.getString(88)    // COLUMN_GEAR
                 };
                 csvWrite.writeNext(arrStr);
 
