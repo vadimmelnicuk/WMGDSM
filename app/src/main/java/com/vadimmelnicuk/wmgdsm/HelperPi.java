@@ -33,6 +33,8 @@ public class HelperPi extends Main {
     private final String STOP_MESSAGE = "4294901773";
     private final String VEHICLE_UPDATE_MESSAGE = "4294901765";
     private final String EVENT_IN_V2 = "4294901781";
+    private final String EVENT_NBACK = "110";
+    private final String MANUAL_CONTROL_MESSAGE = "100";
 
     public static boolean dpUpdated = false;
     public static int scenarioState = 0;
@@ -82,8 +84,6 @@ public class HelperPi extends Main {
     public void init() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mHandler = new Handler();
-        connect();
-
     }
 
     public void connect() {
@@ -96,6 +96,8 @@ public class HelperPi extends Main {
     }
 
     public void accept() {
+        connect();
+
         final Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -123,10 +125,20 @@ public class HelperPi extends Main {
 
     public void disconnect() {
         try {
-            mServerSocket.close();
+            if(modulesPiConnected) {
+                mServerSocket.close();
+            }
+            modulesPiConnected = false;
+            updateLabel(FragmentModules.modulesPiButton, "Connect");
+            updateButton(FragmentModules.modulesPiButton, true);
+            updateImage(FragmentModules.modulesPiIndicator, R.drawable.circle_red);
         } catch (IOException e) {
             Log.e("PI", "Could not close the socket", e);
         }
+    }
+
+    public void sendManualControlMessage() {
+        send(MANUAL_CONTROL_MESSAGE);
     }
 
     private void initStreams() {
@@ -170,10 +182,19 @@ public class HelperPi extends Main {
                                     String param1 = messageArray[1];
                                     String param2 = messageArray[2];
                                     String param3 = messageArray[3];
-                                    Log.d("PI", "nBack " + param1 + param2 + param3);
 
-                                    if(param1.equals("1")) {
-                                        Main.nbackHelper.startTimer();
+                                    if(param1.equals(EVENT_NBACK)) {
+                                        if(Main.nbackHelper.nbackRunning == false) {
+                                            Log.d("PI", "nBack " + param1 + " " + param2);
+
+                                            if(param2.equals("0")) {
+                                                Main.nbackHelper.run(0);
+                                            } else if(param2.equals("1")) {
+                                                Main.nbackHelper.run(1);
+                                            } else if(param2.equals("2")) {
+                                                Main.nbackHelper.run(2);
+                                            }
+                                        }
                                     }
                                 }
                                 else if(messageId.equals(VEHICLE_UPDATE_MESSAGE)) {
@@ -220,9 +241,28 @@ public class HelperPi extends Main {
                             }
                         } catch (IOException e) {
                             Log.d("PI", "Input stream was disconnected", e);
+                            disconnect();
+                            break;
                         }
                     } else {
                         break;
+                    }
+                }
+            }
+        });
+        thread.start();
+    }
+
+    private void send(final String message) {
+        final Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(mSocket.isConnected()) {
+                    byte[] bytes = message.getBytes();
+                    try {
+                        mOutStream.write(bytes);
+                    } catch (IOException e) {
+                        Log.e("PI", "Error occurred when sending data through output stream", e);
                     }
                 }
             }

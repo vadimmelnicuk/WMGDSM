@@ -125,8 +125,29 @@
 
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/HMIImage"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/hmi_empty" />
+
+    <TextView
+        android:id="@+id/HMI_message"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"
+        android:text="type"
+        android:textSize="28dp"
+        android:textColor="#ffffff" />
+
     <RelativeLayout
         android:id="@+id/nback"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_material_dark">
@@ -141,16 +162,6 @@
             android:text="type"
             android:textSize="30dp"
             android:textColor="#cccccc" />
-
-        <ImageView
-            android:id="@+id/nback_circle"
-            android:visibility="visible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="90dp"
-            android:background="@drawable/circle_grey" />
 
         <TextView
             android:id="@+id/nback_label"
@@ -171,13 +182,34 @@
             android:text="result"
             android:textSize="30dp" />
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/nback_message_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_material_dark">
 
-    <ImageView
-        android:id="@+id/HMIImage"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY" />
+            <TextView
+                android:id="@+id/nback_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Prepare for\nn-back 0"
+                android:textSize="60dp" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/nback_circle"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="90dp"
+            android:background="@drawable/circle_grey" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

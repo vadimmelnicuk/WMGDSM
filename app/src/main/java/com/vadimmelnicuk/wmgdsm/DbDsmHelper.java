@@ -38,6 +38,7 @@ public class DbDsmHelper extends SQLiteOpenHelper {
     public static final String COLUMN_MODULES_AFFECTIVA = "affectiva";
     public static final String COLUMN_MODULES_HRV = "hrv";
     public static final String COLUMN_MODULES_PI = "pi";
+    public static final String COLUMN_MODULES_NBACK = "nback";
 
     // Empatica E4 data
     public static final String COLUMN_X = "x";
@@ -136,17 +137,22 @@ public class DbDsmHelper extends SQLiteOpenHelper {
     public static final String COLUMN_STEERING_WHEEL_ANGLE = "steeringWheelAngle";
     public static final String COLUMN_GEAR = "gear";
 
-
+    public static final String COLUMN_NBACK_STATE = "nbackState";
+    public static final String COLUMN_NBACK_LEVEL = "nbackLevel";
+    public static final String COLUMN_NBACK_NUMBER = "nbackNumber";
+    public static final String COLUMN_NBACK_RESPONSE = "nbackResponse";
+    public static final String COLUMN_NBACK_SCORE = "nbackScore";
 
     private static final String SQL_CREATE_SESSION_TABLE = "CREATE TABLE " + TABLE_SESSION + " (" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_TIMESTAMP + " INTEGER NOT NULL, " +
             COLUMN_SYNCDATA + " INTEGER DEFAULT 0, " +
-            COLUMN_MODULES_EMPATICAE4 + " INTEGER DEFAULT 0, " +
-            COLUMN_MODULES_POLARH7 + " INTEGER DEFAULT 0, " +
-            COLUMN_MODULES_AFFECTIVA + " INTEGER DEFAULT 0, " +
+            COLUMN_MODULES_EMPATICAE4 + " INTEGER DEFAULT 0," +
+            COLUMN_MODULES_POLARH7 + " INTEGER DEFAULT 0," +
+            COLUMN_MODULES_AFFECTIVA + " INTEGER DEFAULT 0," +
             COLUMN_MODULES_HRV + " INTEGER DEFAULT 0," +
-            COLUMN_MODULES_PI + " INTEGER DEFAULT 0" +
+            COLUMN_MODULES_PI + " INTEGER DEFAULT 0," +
+            COLUMN_MODULES_NBACK + " INTEGER DEFAULT 0" +
             ");";
 
     private static final String SQL_CREATE_SYNCDATA_TABLE = "CREATE TABLE " + TABLE_SYNCDATA + " (" +
@@ -243,7 +249,13 @@ public class DbDsmHelper extends SQLiteOpenHelper {
             COLUMN_BRAKE_PEDAL + " TEXT," +
             COLUMN_CLUTCH_PEDAL + " TEXT," +
             COLUMN_STEERING_WHEEL_ANGLE + " TEXT," +
-            COLUMN_GEAR + " TEXT" +
+            COLUMN_GEAR + " TEXT," +
+            // N-Back
+            COLUMN_NBACK_STATE + " TEXT," +
+            COLUMN_NBACK_LEVEL + " TEXT," +
+            COLUMN_NBACK_NUMBER + " TEXT," +
+            COLUMN_NBACK_RESPONSE + " TEXT," +
+            COLUMN_NBACK_SCORE + " TEXT" +
             ");";
 
     public DbDsmHelper(Context context) {
@@ -278,6 +290,7 @@ public class DbDsmHelper extends SQLiteOpenHelper {
         values.put(COLUMN_MODULES_AFFECTIVA, Boolean.compare(Main.modulesAffectiva, false));
         values.put(COLUMN_MODULES_HRV, Boolean.compare(Main.modulesHRV, false));
         values.put(COLUMN_MODULES_PI, Boolean.compare(Main.modulesPi, false));
+        values.put(COLUMN_MODULES_NBACK, Boolean.compare(Main.modulesNBack, false));
 
         long sessionId = db.insert(TABLE_SESSION, null, values);
         long session = getSessionTimestamp(sessionId);
@@ -441,6 +454,19 @@ public class DbDsmHelper extends SQLiteOpenHelper {
             values.put(COLUMN_GEAR, Main.piHelper.gear);
             Main.piHelper.dpUpdated = false;
         }
+        if(Main.modulesNBack) {
+            values.put(COLUMN_NBACK_STATE, (Main.nbackHelper.nbackRunning) ? 1 : 0);
+        }
+        if(Main.nbackHelper.nbackUpdated) {
+            values.put(COLUMN_NBACK_LEVEL, Main.nbackHelper.nbackLevel);
+            values.put(COLUMN_NBACK_NUMBER, Main.nbackHelper.nbackNumber);
+            if(Main.nbackHelper.nbackResponseReceived) {
+                values.put(COLUMN_NBACK_RESPONSE, Main.nbackHelper.nbackResponse);
+                values.put(COLUMN_NBACK_SCORE, Main.nbackHelper.nbackScore);
+                Main.nbackHelper.nbackResponseReceived = false;
+            }
+            Main.nbackHelper.nbackUpdated = false;
+        }
 
         db.insert(TABLE_SYNCDATA, null, values);
     }
@@ -549,7 +575,12 @@ public class DbDsmHelper extends SQLiteOpenHelper {
                         curCSV.getString(85),
                         curCSV.getString(86),
                         curCSV.getString(87),
-                        curCSV.getString(88)    // COLUMN_GEAR
+                        curCSV.getString(88),   // COLUMN_GEAR
+                        curCSV.getString(89),   // N-Back State
+                        curCSV.getString(90),   // N-Back Level
+                        curCSV.getString(91),   // N-Back Number
+                        curCSV.getString(92),   // N-Back Response
+                        curCSV.getString(93)    // N-Back Score
                 };
                 csvWrite.writeNext(arrStr);
 

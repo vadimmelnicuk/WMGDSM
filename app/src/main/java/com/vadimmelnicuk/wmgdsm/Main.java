@@ -1,7 +1,6 @@
 package com.vadimmelnicuk.wmgdsm;
 
 import android.app.Fragment;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
@@ -53,9 +52,12 @@ public class Main extends AppCompatActivity {
     public static boolean modulesNBackConnected = false;
     public static boolean modulesPi = false;
     public static boolean modulesPiConnected = false;
+    public static boolean syncData = false;
     public static boolean displayData = false;
     public static boolean displayCamera = false;
-    public static boolean syncData = false;
+    public static boolean displayNbackResult = false;
+    public static int prefNbackTests;
+    public static int prefNbackNumbers;
 
     // UI
     public static Fragment empaticaE4Fragment;
@@ -67,11 +69,7 @@ public class Main extends AppCompatActivity {
     public static Button sessionControlButton;
     public static Button resetButton;
     public static ImageView HMIImage;
-    public static RelativeLayout nbackLayout;
-    public static TextView nbackLabel;
-    public static TextView nbackTypeLabel;
-    public static ImageView nbackCircle;
-    public static TextView nbackResult;
+    public static TextView HMIMessage;
 
     // Bitmaps
     public static Drawable HMIEmpty;
@@ -80,8 +78,16 @@ public class Main extends AppCompatActivity {
     public static Drawable HMIRightArrow;
     public static Drawable HMIRightArrowTurn;
     public static Drawable HMISwerve;
+    public static Drawable HMIEmergency;
 
-    // n back
+    // N-Back
+    public static RelativeLayout nbackLayout;
+    public static TextView nbackLabel;
+    public static TextView nbackTypeLabel;
+    public static ImageView nbackCircle;
+    public static TextView nbackResult;
+    public static RelativeLayout nbackMessageLayout;
+    public static TextView nbackMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,9 +228,12 @@ public class Main extends AppCompatActivity {
         modulesHRV = preferences.getBoolean("pref_hrv_analysis", false);
         modulesNBack = preferences.getBoolean("pref_modules_nback", false);
         modulesPi = preferences.getBoolean("pref_modules_pi", false);
+        syncData = preferences.getBoolean("pref_sync_data", false);
         displayData = preferences.getBoolean("pref_display_data", false);
         displayCamera = preferences.getBoolean("pref_display_camera", false);
-        syncData = preferences.getBoolean("pref_sync_data", false);
+        displayNbackResult = preferences.getBoolean("pref_nback_result", false);
+        prefNbackTests = Integer.parseInt(preferences.getString("pref_nback_tests", "1"));
+        prefNbackNumbers = Integer.parseInt(preferences.getString("pref_nback_numbers", "1"));
 
         // Initialize vars that reference UI components
         empaticaE4Fragment = getFragmentManager().findFragmentById(R.id.fragment_empaticae4);
@@ -236,11 +245,14 @@ public class Main extends AppCompatActivity {
         sessionControlButton = (Button) findViewById(R.id.session_control);
         resetButton = (Button) findViewById(R.id.resetButton);
         HMIImage = (ImageView) findViewById(R.id.HMIImage);
+        HMIMessage = (TextView) findViewById(R.id.HMI_message);
         nbackLayout = (RelativeLayout) findViewById(R.id.nback);
         nbackLabel = (TextView) findViewById(R.id.nback_label);
         nbackTypeLabel = (TextView) findViewById(R.id.nback_type_label);
         nbackCircle = (ImageView) findViewById(R.id.nback_circle);
         nbackResult = (TextView) findViewById(R.id.nback_result);
+        nbackMessageLayout = (RelativeLayout) findViewById(R.id.nback_message_layout);
+        nbackMessage = (TextView) findViewById(R.id.nback_message);
     }
 
     private void loadButtonListeners() {
@@ -278,6 +290,9 @@ public class Main extends AppCompatActivity {
                     if(modulesHRV) {
                         hrvHelper.stopTimer();
                         toggleFragment(hrvFragment, false);
+                    }
+                    if(modulesPi) {
+                        piHelper.disconnect();
                     }
                 } else {
                     if(modulesEmpaticaE4 || modulesPolarH7 || modulesAffectiva) {
@@ -359,6 +374,7 @@ public class Main extends AppCompatActivity {
         HMIRightArrow = getDrawable(R.drawable.hmi_right_arrow);
         HMIRightArrowTurn = getDrawable(R.drawable.hmi_right_arrow_turn);
         HMISwerve = getDrawable(R.drawable.hmi_swerve);
+        HMIEmergency = getDrawable(R.drawable.hmi_emergency);
     }
 
     private void initSession() {
@@ -440,6 +456,32 @@ public class Main extends AppCompatActivity {
                     layout.setVisibility(View.VISIBLE);
                 } else {
                     layout.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    public void toggleTextView(final TextView view, final boolean sh) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(sh) {
+                    view.setVisibility(View.VISIBLE);
+                } else {
+                    view.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    public void toggleImageView(final ImageView view, final boolean sh) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(sh) {
+                    view.setVisibility(View.VISIBLE);
+                } else {
+                    view.setVisibility(View.GONE);
                 }
             }
         });

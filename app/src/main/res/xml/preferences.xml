@@ -40,9 +40,9 @@
         android:key="pref_data">
 
         <CheckBoxPreference
-            android:title="HRV analysis"
+            android:title="Synchronise data"
             android:defaultValue="false"
-            android:key="pref_hrv_analysis" />
+            android:key="pref_sync_data" />
 
         <CheckBoxPreference
             android:title="Display data"
@@ -52,16 +52,44 @@
         <CheckBoxPreference
             android:title="Display camera feed"
             android:defaultValue="false"
-            android:key="pref_display_camera" />
+            android:key="pref_display_camera"
+            android:dependency="pref_modules_affectiva" />
 
         <CheckBoxPreference
-            android:title="Synchronise data"
+            android:title="HRV analysis"
             android:defaultValue="false"
-            android:key="pref_sync_data" />
+            android:key="pref_hrv_analysis"
+            android:dependency="pref_modules_polarH7" />
 
         <Preference
             android:title="Delete data"
             android:key="pref_delete_data" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="N-Back"
+        android:key="pref_nback">
+
+        <CheckBoxPreference
+            android:title="Display N-Back result"
+            android:defaultValue="false"
+            android:key="pref_nback_result"
+            android:dependency="pref_modules_nback" />
+
+        <EditTextPreference
+            android:defaultValue="4"
+            android:inputType="number"
+            android:key="pref_nback_tests"
+            android:title="N-Back tests"
+            android:dependency="pref_modules_nback" />
+
+        <EditTextPreference
+            android:defaultValue="10"
+            android:inputType="number"
+            android:key="pref_nback_numbers"
+            android:title="N-Back numbers per test"
+            android:dependency="pref_modules_nback" />
 
     </PreferenceCategory>
 

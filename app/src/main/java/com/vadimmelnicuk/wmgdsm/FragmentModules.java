@@ -23,17 +23,22 @@ public class FragmentModules extends Fragment {
     private RelativeLayout modulesAffectivaLayout;
     private RelativeLayout modulesHRVLayout;
     private RelativeLayout modulesPiLayout;
+    private RelativeLayout modulesNbackLayout;
 
     public static ImageView modulesEmpaticaE4Indicator;
     public static ImageView modulesPolarH7Indicator;
     public static ImageView modulesAffectivaIndicator;
     public static ImageView modulesHRVIndicator;
     public static ImageView modulesPiIndicator;
+    public static ImageView modulesNbackIndicator;
 
     public static Button modulesEmpaticaE4Button;
     public static Button modulesPolarH7Button;
     public static Button modulesAffectivaButton;
     public static Button modulesPiButton;
+    public static Button modulesNbackButton0;
+    public static Button modulesNbackButton1;
+    public static Button modulesNbackButton2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,17 +56,22 @@ public class FragmentModules extends Fragment {
         modulesAffectivaLayout = (RelativeLayout) getView().findViewById(R.id.modules_affectiva);
         modulesHRVLayout = (RelativeLayout) getView().findViewById(R.id.modules_hrv);
         modulesPiLayout = (RelativeLayout) getView().findViewById(R.id.modules_pi);
+        modulesNbackLayout = (RelativeLayout) getView().findViewById(R.id.modules_nback);
 
         modulesEmpaticaE4Indicator = (ImageView) getView().findViewById(R.id.modules_empaticaE4_indicator);
         modulesPolarH7Indicator = (ImageView) getView().findViewById(R.id.modules_polarH7_indicator);
         modulesAffectivaIndicator = (ImageView) getView().findViewById(R.id.modules_affectiva_indicator);
         modulesHRVIndicator = (ImageView) getView().findViewById(R.id.modules_hrv_indicator);
         modulesPiIndicator = (ImageView) getView().findViewById(R.id.modules_pi_indicator);
+        modulesNbackIndicator = (ImageView) getView().findViewById(R.id.modules_nback_indicator);
 
         modulesEmpaticaE4Button = (Button) getView().findViewById(R.id.modules_empaticaE4_button);
         modulesPolarH7Button = (Button) getView().findViewById(R.id.modules_polarH7_button);
         modulesAffectivaButton = (Button) getView().findViewById(R.id.modules_affectiva_button);
         modulesPiButton = (Button) getView().findViewById(R.id.modules_pi_button);
+        modulesNbackButton0 = (Button) getView().findViewById(R.id.modules_nback_button_0);
+        modulesNbackButton1 = (Button) getView().findViewById(R.id.modules_nback_button_1);
+        modulesNbackButton2 = (Button) getView().findViewById(R.id.modules_nback_button_2);
 
         if(Main.modulesEmpaticaE4 || Main.modulesPolarH7 || Main.modulesAffectiva) {
             if(Main.modulesEmpaticaE4) {
@@ -132,6 +142,29 @@ public class FragmentModules extends Fragment {
                     }
                 });
                 modulesPiLayout.setVisibility(View.VISIBLE);
+            }
+            if(Main.modulesNBack) {
+                Main.modulesNBackConnected = true;
+                modulesNbackButton0.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Main.nbackHelper.run(0);
+                    }
+                });
+                modulesNbackButton1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Main.nbackHelper.run(1);
+                    }
+                });
+                modulesNbackButton2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Main.nbackHelper.run(2);
+                    }
+                });
+                modulesNbackIndicator.setImageResource(R.drawable.circle_green);
+                modulesNbackLayout.setVisibility(View.VISIBLE);
             }
         } else {
             modulesLabel.setText("Please select some modules in the settings section.");
