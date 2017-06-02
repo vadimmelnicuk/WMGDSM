@@ -36,6 +36,7 @@ public class FragmentModules extends Fragment {
     public static Button modulesPolarH7Button;
     public static Button modulesAffectivaButton;
     public static Button modulesPiButton;
+    public static Button modulesNbackWarningButton;
     public static Button modulesNbackButton0;
     public static Button modulesNbackButton1;
     public static Button modulesNbackButton2;
@@ -69,11 +70,12 @@ public class FragmentModules extends Fragment {
         modulesPolarH7Button = (Button) getView().findViewById(R.id.modules_polarH7_button);
         modulesAffectivaButton = (Button) getView().findViewById(R.id.modules_affectiva_button);
         modulesPiButton = (Button) getView().findViewById(R.id.modules_pi_button);
+        modulesNbackWarningButton = (Button) getView().findViewById(R.id.modules_nback_warning_button);
         modulesNbackButton0 = (Button) getView().findViewById(R.id.modules_nback_button_0);
         modulesNbackButton1 = (Button) getView().findViewById(R.id.modules_nback_button_1);
         modulesNbackButton2 = (Button) getView().findViewById(R.id.modules_nback_button_2);
 
-        if(Main.modulesEmpaticaE4 || Main.modulesPolarH7 || Main.modulesAffectiva) {
+        if(Main.modulesEmpaticaE4 || Main.modulesPolarH7 || Main.modulesAffectiva || Main.modulesPi) {
             if(Main.modulesEmpaticaE4) {
                 modulesEmpaticaE4Button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -145,6 +147,12 @@ public class FragmentModules extends Fragment {
             }
             if(Main.modulesNBack) {
                 Main.modulesNBackConnected = true;
+                modulesNbackWarningButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Main.nbackHelper.showWarning();
+                    }
+                });
                 modulesNbackButton0.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

@@ -82,33 +82,12 @@ public class HelperNBack extends Main implements RecognitionListener {
                         nbackRunning = false;
                         // TODO implement transition to manual here + HMI
                         if(piHelper.scenarioState == 1) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    AnimationDrawable animation = new AnimationDrawable();
-                                    animation.addFrame(HMIInfrontCar, 500);
-                                    animation.addFrame(HMIEmergency, 1000);
-                                    animation.addFrame(HMIInfrontCar, 500);
-                                    animation.addFrame(HMIEmergency, 1000);
-                                    animation.addFrame(HMIInfrontCar, 500);
-                                    animation.addFrame(HMIEmergency, 1000);
-                                    animation.addFrame(HMIInfrontCar, 500);
-                                    animation.setOneShot(true);
-                                    HMIImage.setImageDrawable(animation);
-                                    HMIMessage.setText("Take over manual control");
-                                    mPlayerBeep10.start();
-                                    animation.start();
-                                }
-                            });
-                            toggleTextView(HMIMessage, true);
-                            toggleImageView(HMIImage, true);
+                            showWarning();
 
                             final Handler handler = new Handler(Looper.getMainLooper());
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    toggleTextView(HMIMessage, false);
-                                    toggleImageView(HMIImage, false);
                                     piHelper.sendManualControlMessage();
                                 }
                             }, mTransitionTime);
@@ -208,6 +187,38 @@ public class HelperNBack extends Main implements RecognitionListener {
                 mPlayerBeep10.start();
             }
         });
+    }
+
+    public void showWarning() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AnimationDrawable animation = new AnimationDrawable();
+                animation.addFrame(HMIInfrontCar, 500);
+                animation.addFrame(HMIEmergency, 1000);
+                animation.addFrame(HMIInfrontCar, 500);
+                animation.addFrame(HMIEmergency, 1000);
+                animation.addFrame(HMIInfrontCar, 500);
+                animation.addFrame(HMIEmergency, 1000);
+                animation.addFrame(HMIInfrontCar, 500);
+                animation.setOneShot(true);
+                HMIImage.setImageDrawable(animation);
+                HMIMessage.setText("Take over manual control");
+                mPlayerBeep10.start();
+                animation.start();
+            }
+        });
+        toggleTextView(HMIMessage, true);
+        toggleImageView(HMIImage, true);
+
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toggleTextView(HMIMessage, false);
+                toggleImageView(HMIImage, false);
+            }
+        }, mTransitionTime);
     }
 
     public void startTimer() {
