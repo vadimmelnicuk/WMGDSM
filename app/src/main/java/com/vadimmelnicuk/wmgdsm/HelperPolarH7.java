@@ -41,14 +41,14 @@ public class HelperPolarH7 extends Main {
     public final static UUID HEART_RATE_SERVICE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
     public final static UUID HEART_RATE_MEASUREMENT = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
 
-    public static boolean BPMUpdated;
-    public static boolean IBIUpdated;
+    public static boolean BPMUpdated = false;
+    public static boolean IBIUpdated = false;
     public static int BPM;
-    public static ArrayList<Double> IBIs;
-    public static ArrayList<RRObject> RRs;
+    public static ArrayList<Double> IBIs  = new ArrayList<>();
+    public static ArrayList<RRObject> RRs = new ArrayList<>();
     public static double cleanRR;
 
-    private long mCounter;
+    private long mCounter = 1;
 
     HelperPolarH7(Context context) {
         mContext = context;
@@ -57,8 +57,6 @@ public class HelperPolarH7 extends Main {
     public void init() {
         // Database init
         polarDb = new DbPolarH7Helper(mContext);
-
-        initVariables();
 
         BLEManager = (BluetoothManager) mContext.getSystemService(mContext.getApplicationContext().BLUETOOTH_SERVICE);
         BLEAdapter = BLEManager.getAdapter();
@@ -70,14 +68,6 @@ public class HelperPolarH7 extends Main {
             BLEFilters = new ArrayList<ScanFilter>();
             BLEFilters.add(0, filter);
         }
-    }
-
-    private void initVariables() {
-        BPMUpdated = false;
-        IBIUpdated = false;
-        IBIs = new ArrayList<>();
-        RRs = new ArrayList<>();
-        mCounter = 1;
     }
 
     public void disconnect() {

@@ -22,7 +22,7 @@ public class HelperHRV extends Main {
     private long DELAY = 1000; // one second moving window
     private long mCounter;
     private boolean mClean;
-    private final static boolean DISPLAY_LOGS = true;
+    private final static boolean DISPLAY_LOGS = false;
 
     public static double RMSSD30;
     public static double RMSSD120;
