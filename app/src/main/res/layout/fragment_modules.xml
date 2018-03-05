@@ -254,4 +254,29 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/modules_aiui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/modules_aiui_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/circle_red" />
+
+        <TextView
+            android:id="@+id/modules_aiui_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="AI UI" />
+
+    </RelativeLayout>
+
 </LinearLayout>

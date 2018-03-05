@@ -34,10 +34,17 @@ public class HelperPi extends Main {
     private final String VEHICLE_UPDATE_MESSAGE = "4294901765";
     private final String EVENT_IN_V2 = "4294901781";
     private final String EVENT_NBACK = "110";
+    private final String EVENT_SCENARIO_TYPE = "101";
     private final String MANUAL_CONTROL_MESSAGE = "100";
+    private final String AIUI_MESSAGE = "777";
+    private final String AIUI_MODE_HEALTH_GOOD = "1";
+    private final String AIUI_MODE_HEALTH_MAYBE = "2";
+    private final String AIUI_MODE_HEALTH_BAD = "4";
+    private final String AIUI_MODE_MANUAL = "8";
 
     public static boolean dpUpdated = false;
     public static int scenarioState = 0;
+    public static int scenarioType = 0;
     public static String messageId;
     public static String vehicleId;
     public static String headLight;
@@ -107,6 +114,10 @@ public class HelperPi extends Main {
                     modulesPiConnected = true;
                     updateLabel(FragmentModules.modulesPiButton, "Connected");
                     updateImage(FragmentModules.modulesPiIndicator, R.drawable.circle_green);
+
+                    if(modulesAIUI) {
+                        toggleRelativeLayout(aiuiLayout, true);
+                    }
                 } catch (IOException e) {
                     Log.e("PI", "Socket's accept method failed", e);
                 }
@@ -176,6 +187,7 @@ public class HelperPi extends Main {
                                 }
                                 else if(messageId.equals(STOP_MESSAGE)) {
                                     scenarioState = 0;
+                                    scenarioType = 0;
                                     Log.d("PI", "Scenario stop");
                                 }
                                 else if(messageId.equals(EVENT_IN_V2)) {
@@ -189,12 +201,41 @@ public class HelperPi extends Main {
 
                                             if(param2.equals("0")) {
                                                 Main.nbackHelper.run(0);
-                                            } else if(param2.equals("1")) {
+                                            } else if(param2.equals("1" )) {
                                                 Main.nbackHelper.run(1);
                                             } else if(param2.equals("2")) {
                                                 Main.nbackHelper.run(2);
                                             }
                                         }
+                                    } else if(param1.equals(EVENT_SCENARIO_TYPE)) {
+                                        if(param2.equals("1")) {
+                                            scenarioType = 1;
+                                        } else if(param2.equals("2")) {
+                                            scenarioType = 2;
+                                        }
+                                    }
+                                }
+                                else if(messageId.equals(AIUI_MESSAGE)) {
+                                    String AIStatus = messageArray[2];
+                                    String AIScore = messageArray[3];
+                                    String AIBonus = messageArray[4];
+                                    String AIReason = messageArray[5];
+
+                                    updateLabel(aiuiScoreLabel, AIScore);
+                                    updateLabel(aiuiBonusLabel, AIBonus);
+                                    updateLabel(aiuiReasonLabel, AIReason);
+
+                                    if(AIStatus.equals(AIUI_MODE_MANUAL)) {
+                                        updateImage(aiuiIndicator, R.drawable.circle_grey);
+                                    }
+                                    else if(AIStatus.equals(AIUI_MODE_HEALTH_GOOD)) {
+                                        updateImage(aiuiIndicator, R.drawable.circle_green);
+                                    }
+                                    else if(AIStatus.equals(AIUI_MODE_HEALTH_MAYBE)) {
+                                        updateImage(aiuiIndicator, R.drawable.circle_amber);
+                                    }
+                                    else if(AIStatus.equals(AIUI_MODE_HEALTH_BAD)) {
+                                        updateImage(aiuiIndicator, R.drawable.circle_red);
                                     }
                                 }
                                 else if(messageId.equals(VEHICLE_UPDATE_MESSAGE)) {

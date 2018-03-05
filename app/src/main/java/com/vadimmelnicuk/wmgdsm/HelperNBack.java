@@ -28,6 +28,7 @@ import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
 
 public class HelperNBack extends Main implements RecognitionListener {
 
+    private boolean DEBUG = false;
     private Context mContext;
     private static Thread mThread;
     private static TimerTask mTimerTask;
@@ -35,21 +36,23 @@ public class HelperNBack extends Main implements RecognitionListener {
     private Random randomGenerator = new Random();
     private static MediaPlayer mPlayerBeep;
     private static MediaPlayer mPlayerBeep10;
+    private static MediaPlayer mPlayerTakeControl10;
     private static SpeechRecognizer recognizer;
-    private int mTransitionTime = 5000;
+    private int mTransitionTime = 10000; // 10s
     private int mMessageDisplayTime = 7000; // 7s
     private int mTestDelay = 7000; // 7s
     private int mNumberDelay = 2250; // 2.25s
     private int mNumberCounter = 1;
     private int mTestsCounter = 1;
+    private int mHMIProgressCounter = 5;
 
     public static boolean nbackUpdated = false;
-    public static boolean nbackResponseReceived;
     public static boolean nbackRunning = false;
     public static int nbackLevel = 0;   // Type of n-back i.e., zero, one, or two n-back
     public static int nbackNumber = 0;
     public static int nbackNextNumber = 0;
     public static int nbackScore = 0;
+    public static int nbackProb = 0;
     public static String nbackResponse;
 
     HelperNBack(Context context) {
@@ -59,6 +62,7 @@ public class HelperNBack extends Main implements RecognitionListener {
     public void init() {
         mPlayerBeep = MediaPlayer.create(mContext, R.raw.beep);
         mPlayerBeep10 = MediaPlayer.create(mContext, R.raw.beep10);
+        mPlayerTakeControl10 = MediaPlayer.create(mContext, R.raw.takecontrol10);
         initRecognizer();
         initThread();
         changeNumber();
@@ -68,11 +72,6 @@ public class HelperNBack extends Main implements RecognitionListener {
         mThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                if(mNumberCounter > 1) {
-                    // Trigger - save response results
-                    nbackUpdated = true;
-                }
-
                 if(mNumberCounter > prefNbackNumbers) {
                     mNumberCounter = 1;
                     stopTimer();
@@ -111,11 +110,12 @@ public class HelperNBack extends Main implements RecognitionListener {
 
                     nbackNumber = nbackNextNumber;
                     updateLabel(nbackLabel, Integer.toString(nbackNumber));
+                    updateLabel(nbackResult, "N");
                     changeNumber();
 
                     startListening();
                     playSoundBeep();
-                    if(mNumberCounter-1 > nbackLevel) {
+                    if(mNumberCounter-1 >= nbackLevel) {
                         toggleImageView(nbackCircle, true);
                         animateCircle(mNumberDelay);
                     } else {
@@ -150,7 +150,7 @@ public class HelperNBack extends Main implements RecognitionListener {
             File numberGrammar = new File(assetDir, "numbers.gram");
             recognizer.addGrammarSearch("numbers", numberGrammar);
         } catch (IOException e) {
-            Log.d("Sphinx", e.toString());
+            Log.d("NBack", e.toString());
         }
     }
 
@@ -177,9 +177,8 @@ public class HelperNBack extends Main implements RecognitionListener {
     public void showMessage() {
         updateLabel(nbackMessage, "Prepare for\nN-Back " + nbackLevel);
         toggleRelativeLayout(nbackMessageLayout, true);
-
-        animateCircle(mMessageDisplayTime);
         toggleImageView(nbackCircle, true);
+        animateCircle(mMessageDisplayTime);
 
         runOnUiThread(new Runnable() {
             @Override
@@ -194,28 +193,24 @@ public class HelperNBack extends Main implements RecognitionListener {
             @Override
             public void run() {
                 AnimationDrawable animation = new AnimationDrawable();
-                animation.addFrame(HMIInfrontCar, 500);
-                animation.addFrame(HMIEmergency, 1000);
-                animation.addFrame(HMIInfrontCar, 500);
-                animation.addFrame(HMIEmergency, 1000);
-                animation.addFrame(HMIInfrontCar, 500);
-                animation.addFrame(HMIEmergency, 1000);
-                animation.addFrame(HMIInfrontCar, 500);
+                animation.addFrame(HMITakeControl, 10000);
                 animation.setOneShot(true);
                 HMIImage.setImageDrawable(animation);
-                HMIMessage.setText("Take over manual control");
-                mPlayerBeep10.start();
+                HMIMessage.setText("Take control");
+                mPlayerTakeControl10.start();
                 animation.start();
             }
         });
         toggleTextView(HMIMessage, true);
         toggleImageView(HMIImage, true);
+        animateHMIProgress();
 
         final Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 toggleTextView(HMIMessage, false);
+                toggleTextView(HMIProgress, false);
                 toggleImageView(HMIImage, false);
             }
         }, mTransitionTime);
@@ -259,6 +254,41 @@ public class HelperNBack extends Main implements RecognitionListener {
         });
     }
 
+    public void animateHMIProgress() {
+        mHMIProgressCounter = 5;
+        final Timer timer = new Timer();
+        final Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                updateLabel(HMIProgress, String.valueOf(mHMIProgressCounter));
+                mHMIProgressCounter -= 1;
+            }
+        });
+        final TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                thread.run();
+            }
+        };
+
+
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toggleTextView(HMIProgress, true);
+                timer.scheduleAtFixedRate(task, 0, 1000);
+            }
+        }, mTransitionTime/2);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                timer.cancel();
+                timer.purge();
+            }
+        }, mTransitionTime);
+    }
+
     public void startListening() {
         runOnUiThread(new Runnable() {
             @Override
@@ -270,19 +300,23 @@ public class HelperNBack extends Main implements RecognitionListener {
                     public void run() {
                         recognizer.stop();
                     }
-                }, mNumberDelay-250);
+                }, mNumberDelay - 250);
             }
         });
     }
 
     @Override
     public void onBeginningOfSpeech() {
-//        Log.d("NBack", "Sphinx Begun");
+        if(DEBUG) {
+            Log.d("NBack", "Speech Begun");
+        }
     }
 
     @Override
     public void onEndOfSpeech() {
-//        Log.d("NBack", "Sphinx Ended");
+        if(DEBUG) {
+            Log.d("NBack", "Speech Ended");
+        }
     }
 
     @Override
@@ -290,8 +324,10 @@ public class HelperNBack extends Main implements RecognitionListener {
         if (hypothesis != null) {
             nbackResponse = hypothesis.getHypstr();
             nbackScore = hypothesis.getBestScore();
-            nbackResponseReceived = true;
-//            Log.d("NBack", "Sphinx Partial Results: " + nbackResponse + " " + nbackScore);
+            nbackProb = hypothesis.getProb();
+            if(DEBUG) {
+                Log.d("NBack", "Partial Results: " + nbackResponse + " " + nbackScore + " " + nbackProb);
+            }
             updateLabel(nbackResult, "P");
         }
     }
@@ -301,15 +337,20 @@ public class HelperNBack extends Main implements RecognitionListener {
         if (hypothesis != null) {
             nbackResponse = hypothesis.getHypstr();
             nbackScore = hypothesis.getBestScore();
-            nbackResponseReceived = true;
-//            Log.d("NBack", "Sphinx Final Result: " + nbackResponse + " " + nbackScore);
+            nbackProb = hypothesis.getProb();
+            nbackUpdated = true;
+            if(DEBUG) {
+                Log.d("NBack", "Final Result: " + nbackResponse + " " + nbackScore + " " + nbackProb);
+            }
             updateLabel(nbackResult, "F: " + nbackResponse);
         }
     }
 
     @Override
     public void onError(Exception e) {
-
+        if(DEBUG) {
+            Log.d("NBack", "Error " + e.getMessage());
+        }
     }
 
     @Override

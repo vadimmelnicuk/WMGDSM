@@ -33,6 +33,11 @@
             android:defaultValue="false"
             android:key="pref_modules_pi" />
 
+        <CheckBoxPreference
+            android:title="AI UI"
+            android:defaultValue="false"
+            android:key="pref_modules_aiui" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

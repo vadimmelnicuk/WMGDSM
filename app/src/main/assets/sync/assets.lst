@@ -12,4 +12,12 @@ en-us-ptm/variances
 menu.gram
 numbers.dict
 numbers.gram
+voxforge-en-sphinx/feat.params
+voxforge-en-sphinx/feature_transform
+voxforge-en-sphinx/mdef
+voxforge-en-sphinx/means
+voxforge-en-sphinx/mixture_weights
+voxforge-en-sphinx/noisedict
+voxforge-en-sphinx/transition_matrices
+voxforge-en-sphinx/variances
 weather.dmp

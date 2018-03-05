@@ -24,6 +24,7 @@ public class FragmentModules extends Fragment {
     private RelativeLayout modulesHRVLayout;
     private RelativeLayout modulesPiLayout;
     private RelativeLayout modulesNbackLayout;
+    private RelativeLayout modulesAIUILayout;
 
     public static ImageView modulesEmpaticaE4Indicator;
     public static ImageView modulesPolarH7Indicator;
@@ -31,6 +32,7 @@ public class FragmentModules extends Fragment {
     public static ImageView modulesHRVIndicator;
     public static ImageView modulesPiIndicator;
     public static ImageView modulesNbackIndicator;
+    public static ImageView modulesAIUIIndicator;
 
     public static Button modulesEmpaticaE4Button;
     public static Button modulesPolarH7Button;
@@ -58,6 +60,7 @@ public class FragmentModules extends Fragment {
         modulesHRVLayout = (RelativeLayout) getView().findViewById(R.id.modules_hrv);
         modulesPiLayout = (RelativeLayout) getView().findViewById(R.id.modules_pi);
         modulesNbackLayout = (RelativeLayout) getView().findViewById(R.id.modules_nback);
+        modulesAIUILayout = (RelativeLayout) getView().findViewById(R.id.modules_aiui);
 
         modulesEmpaticaE4Indicator = (ImageView) getView().findViewById(R.id.modules_empaticaE4_indicator);
         modulesPolarH7Indicator = (ImageView) getView().findViewById(R.id.modules_polarH7_indicator);
@@ -65,6 +68,7 @@ public class FragmentModules extends Fragment {
         modulesHRVIndicator = (ImageView) getView().findViewById(R.id.modules_hrv_indicator);
         modulesPiIndicator = (ImageView) getView().findViewById(R.id.modules_pi_indicator);
         modulesNbackIndicator = (ImageView) getView().findViewById(R.id.modules_nback_indicator);
+        modulesAIUIIndicator = (ImageView) getView().findViewById(R.id.modules_aiui_indicator);
 
         modulesEmpaticaE4Button = (Button) getView().findViewById(R.id.modules_empaticaE4_button);
         modulesPolarH7Button = (Button) getView().findViewById(R.id.modules_polarH7_button);
@@ -173,6 +177,11 @@ public class FragmentModules extends Fragment {
                 });
                 modulesNbackIndicator.setImageResource(R.drawable.circle_green);
                 modulesNbackLayout.setVisibility(View.VISIBLE);
+            }
+            if(Main.modulesAIUI) {
+                Main.modulesAIUIConnected = true;
+                modulesAIUIIndicator.setImageResource(R.drawable.circle_green);
+                modulesAIUILayout.setVisibility(View.VISIBLE);
             }
         } else {
             modulesLabel.setText("Please select some modules in the settings section.");

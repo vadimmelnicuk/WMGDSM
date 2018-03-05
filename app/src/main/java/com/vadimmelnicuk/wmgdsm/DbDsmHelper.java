@@ -100,6 +100,8 @@ public class DbDsmHelper extends SQLiteOpenHelper {
     public static final String COLUMN_RMSSD120 = "rmssd120";
 
     public static final String COLUMN_SCENARIO_STATE = "scenarioState";
+    public static final String COLUMN_SCENARIO_TYPE = "scenarioType";
+    public static final String COLUMN_VEHICLE_ID = "vehicleId";
     public static final String COLUMN_HEAD_LIGHT = "headLight";
     public static final String COLUMN_BRAKE_LIGHT = "brakeLight";
     public static final String COLUMN_REVERSE_LIGHT = "reverseLight";
@@ -214,6 +216,8 @@ public class DbDsmHelper extends SQLiteOpenHelper {
             COLUMN_RMSSD120 + " TEXT," +
             // Driving performance through HIL
             COLUMN_SCENARIO_STATE + " TEXT," +
+            COLUMN_SCENARIO_TYPE + " TEXT," +
+            COLUMN_VEHICLE_ID + " TEXT," +
             COLUMN_HEAD_LIGHT + " TEXT," +
             COLUMN_BRAKE_LIGHT + " TEXT," +
             COLUMN_REVERSE_LIGHT + " TEXT," +
@@ -414,8 +418,10 @@ public class DbDsmHelper extends SQLiteOpenHelper {
         if(Main.modulesPi) {
             // Put scenario state outside of driving performance update condition so that it is recorded continuously
             values.put(COLUMN_SCENARIO_STATE, Main.piHelper.scenarioState);
+            values.put(COLUMN_SCENARIO_TYPE, Main.piHelper.scenarioType);
         }
         if(Main.piHelper.dpUpdated) {
+            values.put(COLUMN_VEHICLE_ID, Main.piHelper.vehicleId);
             values.put(COLUMN_HEAD_LIGHT, Main.piHelper.headLight);
             values.put(COLUMN_BRAKE_LIGHT, Main.piHelper.brakeLight);
             values.put(COLUMN_REVERSE_LIGHT, Main.piHelper.reverseLight);
@@ -456,16 +462,14 @@ public class DbDsmHelper extends SQLiteOpenHelper {
         }
         if(Main.modulesNBack) {
             values.put(COLUMN_NBACK_STATE, (Main.nbackHelper.nbackRunning) ? 1 : 0);
-        }
-        if(Main.nbackHelper.nbackUpdated) {
-            values.put(COLUMN_NBACK_LEVEL, Main.nbackHelper.nbackLevel);
-            values.put(COLUMN_NBACK_NUMBER, Main.nbackHelper.nbackNumber);
-            if(Main.nbackHelper.nbackResponseReceived) {
+
+            if(Main.nbackHelper.nbackUpdated) {
+                values.put(COLUMN_NBACK_LEVEL, Main.nbackHelper.nbackLevel);
+                values.put(COLUMN_NBACK_NUMBER, Main.nbackHelper.nbackNumber);
                 values.put(COLUMN_NBACK_RESPONSE, Main.nbackHelper.nbackResponse);
                 values.put(COLUMN_NBACK_SCORE, Main.nbackHelper.nbackScore);
-                Main.nbackHelper.nbackResponseReceived = false;
+                Main.nbackHelper.nbackUpdated = false;
             }
-            Main.nbackHelper.nbackUpdated = false;
         }
 
         db.insert(TABLE_SYNCDATA, null, values);
@@ -540,8 +544,8 @@ public class DbDsmHelper extends SQLiteOpenHelper {
                         curCSV.getString(50),   // RMSSD30
                         curCSV.getString(51),   // RMSSD120
                         curCSV.getString(52),   // COLUMN_SCENARIO_STATE
-                        curCSV.getString(53),
-                        curCSV.getString(54),
+                        curCSV.getString(53),   // COLUMN_SCENARIO_TYPE
+                        curCSV.getString(54),   // VEHICLE_ID
                         curCSV.getString(55),
                         curCSV.getString(56),
                         curCSV.getString(57),
@@ -575,12 +579,15 @@ public class DbDsmHelper extends SQLiteOpenHelper {
                         curCSV.getString(85),
                         curCSV.getString(86),
                         curCSV.getString(87),
-                        curCSV.getString(88),   // COLUMN_GEAR
-                        curCSV.getString(89),   // N-Back State
-                        curCSV.getString(90),   // N-Back Level
-                        curCSV.getString(91),   // N-Back Number
-                        curCSV.getString(92),   // N-Back Response
-                        curCSV.getString(93)    // N-Back Score
+                        curCSV.getString(88),
+                        curCSV.getString(89),
+                        curCSV.getString(90),   // COLUMN_GEAR
+                        curCSV.getString(91),   // N-Back State
+                        curCSV.getString(92),   // N-Back Level
+                        curCSV.getString(93),   // N-Back Number
+                        curCSV.getString(94),   // N-Back Response
+                        curCSV.getString(95)    // N-Back Score
+
                 };
                 csvWrite.writeNext(arrStr);
 

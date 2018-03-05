@@ -1,6 +1,7 @@
 package com.vadimmelnicuk.wmgdsm;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
@@ -20,6 +21,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
+
+import com.jjoe64.graphview.series.DataPoint;
+
+import org.w3c.dom.Text;
 
 public class Main extends AppCompatActivity {
 
@@ -52,6 +57,8 @@ public class Main extends AppCompatActivity {
     public static boolean modulesNBackConnected = false;
     public static boolean modulesPi = false;
     public static boolean modulesPiConnected = false;
+    public static boolean modulesAIUI = false;
+    public static boolean modulesAIUIConnected = false;
     public static boolean syncData = false;
     public static boolean displayData = false;
     public static boolean displayCamera = false;
@@ -70,6 +77,7 @@ public class Main extends AppCompatActivity {
     public static Button resetButton;
     public static ImageView HMIImage;
     public static TextView HMIMessage;
+    public static TextView HMIProgress;
 
     // Bitmaps
     public static Drawable HMIEmpty;
@@ -79,6 +87,7 @@ public class Main extends AppCompatActivity {
     public static Drawable HMIRightArrowTurn;
     public static Drawable HMISwerve;
     public static Drawable HMIEmergency;
+    public static Drawable HMITakeControl;
 
     // N-Back
     public static RelativeLayout nbackLayout;
@@ -88,6 +97,13 @@ public class Main extends AppCompatActivity {
     public static TextView nbackResult;
     public static RelativeLayout nbackMessageLayout;
     public static TextView nbackMessage;
+
+    // AIUI
+    public static RelativeLayout aiuiLayout;
+    public static ImageView aiuiIndicator;
+    public static TextView aiuiScoreLabel;
+    public static TextView aiuiBonusLabel;
+    public static TextView aiuiReasonLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,8 +155,11 @@ public class Main extends AppCompatActivity {
             nbackHelper = new HelperNBack(getApplicationContext());
             nbackHelper.init();
         }
+        if(modulesAIUI) {
 
-        Log.d("APP STATE", "Init complete");
+        }
+
+        Log.d("AppState", "Init complete");
     }
 
     @Override
@@ -228,6 +247,7 @@ public class Main extends AppCompatActivity {
         modulesHRV = preferences.getBoolean("pref_hrv_analysis", false);
         modulesNBack = preferences.getBoolean("pref_modules_nback", false);
         modulesPi = preferences.getBoolean("pref_modules_pi", false);
+        modulesAIUI = preferences.getBoolean("pref_modules_aiui", false);
         syncData = preferences.getBoolean("pref_sync_data", false);
         displayData = preferences.getBoolean("pref_display_data", false);
         displayCamera = preferences.getBoolean("pref_display_camera", false);
@@ -246,6 +266,7 @@ public class Main extends AppCompatActivity {
         resetButton = (Button) findViewById(R.id.resetButton);
         HMIImage = (ImageView) findViewById(R.id.HMIImage);
         HMIMessage = (TextView) findViewById(R.id.HMI_message);
+        HMIProgress = (TextView) findViewById(R.id.HMI_progress);
         nbackLayout = (RelativeLayout) findViewById(R.id.nback);
         nbackLabel = (TextView) findViewById(R.id.nback_label);
         nbackTypeLabel = (TextView) findViewById(R.id.nback_type_label);
@@ -253,6 +274,11 @@ public class Main extends AppCompatActivity {
         nbackResult = (TextView) findViewById(R.id.nback_result);
         nbackMessageLayout = (RelativeLayout) findViewById(R.id.nback_message_layout);
         nbackMessage = (TextView) findViewById(R.id.nback_message);
+        aiuiLayout = (RelativeLayout) findViewById(R.id.aiui);
+        aiuiIndicator = (ImageView) findViewById(R.id.aiui_circle);
+        aiuiScoreLabel = (TextView) findViewById(R.id.aiui_score_label);
+        aiuiBonusLabel = (TextView) findViewById(R.id.aiui_bonus_label);
+        aiuiReasonLabel = (TextView) findViewById(R.id.aiui_reason_label);
     }
 
     private void loadButtonListeners() {
@@ -293,6 +319,9 @@ public class Main extends AppCompatActivity {
                     }
                     if(modulesPi) {
                         piHelper.disconnect();
+                    }
+                    if(modulesAIUI) {
+
                     }
                 } else {
                     if(modulesEmpaticaE4 || modulesPolarH7 || modulesAffectiva) {
@@ -362,7 +391,6 @@ public class Main extends AppCompatActivity {
 
                 finish();
                 startActivity(getIntent());
-
             }
         });
     }
@@ -375,6 +403,7 @@ public class Main extends AppCompatActivity {
         HMIRightArrowTurn = getDrawable(R.drawable.hmi_right_arrow_turn);
         HMISwerve = getDrawable(R.drawable.hmi_swerve);
         HMIEmergency = getDrawable(R.drawable.hmi_emergency);
+        HMITakeControl = getDrawable(R.drawable.hmi_take_control_red);
     }
 
     private void initSession() {

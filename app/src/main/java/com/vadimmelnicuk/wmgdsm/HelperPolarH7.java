@@ -68,6 +68,9 @@ public class HelperPolarH7 extends Main {
             BLEFilters = new ArrayList<ScanFilter>();
             BLEFilters.add(0, filter);
         }
+
+        // Reset rrGraphSeries
+        FragmentPolarH7.rrGraphSeries.resetData(new DataPoint[]{});
     }
 
     public void disconnect() {
@@ -92,7 +95,7 @@ public class HelperPolarH7 extends Main {
 //            Log.i("Polar H7 Scan result", result.toString());
             BluetoothDevice btDevice = result.getDevice();
 //            Log.i("Polar H7 Device", btDevice.getName());
-            if(btDevice.getName().equals("Polar H7 " + mContext.getResources().getString(R.string.polarH7_id))) {
+            if(btDevice.getName().equals(mContext.getResources().getString(R.string.polar_id))) {
                 stopScan();
 //                Log.i("Polar H7 Scan", "connecting");
                 polarH7 = btDevice;
@@ -214,6 +217,10 @@ public class HelperPolarH7 extends Main {
                     for(int n = 2; n < characteristic.getValue().length; n += 2) {
                         final double rr = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 1+BPMOffset+n-2)/1024.0*1000.0;
 
+                        // Error when using without HRV analysis: Attempt to invoke virtual method 'void com.vadimmelnicuk.wmgdsm.HelperHRV.filterRR(double, long)' on a null object reference
+                        // Below is the fix for the time being
+//                        cleanRR = rr;
+
                         if(RRs.size() > 10) {
                             Main.hrvHelper.filterRR(rr, currentTime);
                             cleanRR = RRs.get(RRs.size()-2).getRR();
@@ -235,6 +242,7 @@ public class HelperPolarH7 extends Main {
                             updateLabel(FragmentPolarH7.ibiLabel, "IBI: " + String.format("%.03f", cleanRR));
 
                             mCounter += 1;
+
                             FragmentPolarH7.rrGraph.getViewport().setMinX(mCounter-FragmentPolarH7.graphWidth);
                             FragmentPolarH7.rrGraph.getViewport().setMaxX(mCounter);
 

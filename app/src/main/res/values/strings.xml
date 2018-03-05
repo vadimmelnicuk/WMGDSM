@@ -5,7 +5,7 @@
     <string name="app_name">WMG DSM</string>
     <string name="app_version">v1.0</string>
     <string name="empatica_api_key">190f51e2d6c145af90426afebf6dcb3b</string>
-    <string name="polarH7_id">449A8E1E</string>
+    <string name="polar_id">Polar H10 ED12CD10</string>
 
     <string name="acceleration_label">Acceleration</string>
     <string name="acceleration_x">x: -</string>

@@ -38,6 +38,10 @@ public class HelperHRV extends Main {
         initVariables();
         initThread();
         initTimers();
+
+        // Reset rrGraphSeries
+        FragmentHRV.rmssd30GraphSeries.resetData(new DataPoint[]{});
+        FragmentHRV.rmssd120GraphSeries.resetData(new DataPoint[]{});
     }
 
     private void initVariables() {
@@ -155,8 +159,8 @@ public class HelperHRV extends Main {
             RMSSD30 = calculateRMSSD(getRRSample(currentTime, 30));
             RMSSD120 = calculateRMSSD(getRRSample(currentTime, 120));
 
-            LombScargle ls = new LombScargle(getRRSample(currentTime, 30));
-            fs = ls.calculate();
+//            LombScargle ls = new LombScargle(getRRSample(currentTime, 30));
+//            fs = ls.calculate();
 
             if(Main.syncData) {
                 RMSSDUpdated = true;

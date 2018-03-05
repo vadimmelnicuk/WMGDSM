@@ -142,8 +142,20 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="30dp"
         android:text="type"
-        android:textSize="28dp"
+        android:textSize="50dp"
         android:textColor="#ffffff" />
+
+    <TextView
+        android:id="@+id/HMI_progress"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="120dp"
+        android:text="5"
+        android:textSize="100dp"
+        android:textColor="#cccccc" />
 
     <RelativeLayout
         android:id="@+id/nback"
@@ -208,6 +220,99 @@
             android:layout_centerInParent="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="90dp"
+            android:background="@drawable/circle_grey" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/aiui"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_material_dark">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="200dp"
+            android:text="Score"
+            android:textSize="30dp"
+            android:textColor="#cccccc" />
+
+        <TextView
+            android:id="@+id/aiui_score_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="85dp"
+            android:layout_marginLeft="200dp"
+            android:text="0"
+            android:textSize="30dp"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="165dp"
+            android:layout_marginLeft="30dp"
+            android:text="Bonus / Penalty"
+            android:textSize="20dp"
+            android:textColor="#cccccc" />
+
+        <TextView
+            android:id="@+id/aiui_bonus_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="160dp"
+            android:layout_marginLeft="200dp"
+            android:text="0"
+            android:textSize="30dp"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="235dp"
+            android:layout_marginLeft="30dp"
+            android:text="Reason"
+            android:textSize="20dp"
+            android:textColor="#cccccc" />
+
+        <TextView
+            android:id="@+id/aiui_reason_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="230dp"
+            android:layout_marginLeft="200dp"
+            android:text="-"
+            android:textSize="30dp"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="380dp"
+            android:text="Automation\nHealth"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:textColor="#cccccc" />
+
+        <ImageView
+            android:id="@+id/aiui_circle"
+            android:visibility="visible"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="120dp"
+            android:layout_marginLeft="420dp"
             android:background="@drawable/circle_grey" />
 
     </RelativeLayout>
