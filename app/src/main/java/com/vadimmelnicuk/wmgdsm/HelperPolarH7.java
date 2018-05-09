@@ -219,14 +219,16 @@ public class HelperPolarH7 extends Main {
 
                         // Error when using without HRV analysis: Attempt to invoke virtual method 'void com.vadimmelnicuk.wmgdsm.HelperHRV.filterRR(double, long)' on a null object reference
                         // Below is the fix for the time being
-//                        cleanRR = rr;
-
-                        if(RRs.size() > 10) {
-                            Main.hrvHelper.filterRR(rr, currentTime);
-                            cleanRR = RRs.get(RRs.size()-2).getRR();
+                        if(Main.modulesHRV) {
+                            if(RRs.size() > 10) {
+                                Main.hrvHelper.filterRR(rr, currentTime);
+                                cleanRR = RRs.get(RRs.size()-2).getRR();
+                            } else {
+                                RRs.add(new RRObject(rr, currentTime, 0));
+                                cleanRR = RRs.get(RRs.size()-1).getRR();
+                            }
                         } else {
-                            RRs.add(new RRObject(rr, currentTime, 0));
-                            cleanRR = RRs.get(RRs.size()-1).getRR();
+                            cleanRR = rr;
                         }
 
                         if(session_status) {

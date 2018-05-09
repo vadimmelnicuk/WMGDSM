@@ -32,6 +32,7 @@ public class HelperPi extends Main {
     private final String RUN_MESSAGE = "4294901772";
     private final String STOP_MESSAGE = "4294901773";
     private final String VEHICLE_UPDATE_MESSAGE = "4294901765";
+    private final String VEHICLE_AI_UPDATE_MESSAGE = "4294901764";
     private final String EVENT_IN_V2 = "4294901781";
     private final String EVENT_NBACK = "110";
     private final String EVENT_SCENARIO_TYPE = "101";
@@ -43,6 +44,7 @@ public class HelperPi extends Main {
     private final String AIUI_MODE_MANUAL = "8";
 
     public static boolean dpUpdated = false;
+    public static boolean dpAiUpdated = false;
     public static int scenarioState = 0;
     public static int scenarioType = 0;
     public static String messageId;
@@ -148,8 +150,14 @@ public class HelperPi extends Main {
         }
     }
 
-    public void sendManualControlMessage() {
-        send(MANUAL_CONTROL_MESSAGE);
+    public void sendManualControlMessage(int duration) {
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                send(MANUAL_CONTROL_MESSAGE);
+            }
+        }, duration);
     }
 
     private void initStreams() {
@@ -200,12 +208,15 @@ public class HelperPi extends Main {
                                             Log.d("PI", "nBack " + param1 + " " + param2);
 
                                             if(param2.equals("0")) {
-                                                Main.nbackHelper.run(0);
+                                                Main.nbackHelper.run(0, 10, 4);
                                             } else if(param2.equals("1" )) {
-                                                Main.nbackHelper.run(1);
+                                                Main.nbackHelper.run(1, 10, 4);
                                             } else if(param2.equals("2")) {
-                                                Main.nbackHelper.run(2);
-                                            }
+                                                Main.nbackHelper.run(2, 10, 4);
+                                            } else if(param2.equals("9")) {
+                                                Main.nbackHelper.showWarning(); 
+                                                sendManualControlMessage(10000);
+                                            };
                                         }
                                     } else if(param1.equals(EVENT_SCENARIO_TYPE)) {
                                         if(param2.equals("1")) {
@@ -278,6 +289,30 @@ public class HelperPi extends Main {
                                     gear = messageArray[37];
                                     dpUpdated = true;
 //                                    Log.d("PI", "Message: " + message + " bytes " + bytes);
+                                }
+                                else if(messageId.equals(VEHICLE_AI_UPDATE_MESSAGE)) {
+                                    vehicleId = messageArray[1];
+                                    positionLatitude = messageArray[2];
+                                    positionLongitude = messageArray[3];
+                                    positionElevation = messageArray[4];
+                                    positionX = messageArray[5];
+                                    positionY = messageArray[6];
+                                    positionZ = messageArray[7];
+                                    orientationX = messageArray[8];
+                                    orientationY = messageArray[9];
+                                    orientationZ = messageArray[10];
+                                    velocityX = messageArray[11];
+                                    velocityY = messageArray[12];
+                                    velocityZ = messageArray[13];
+                                    accelerationX = messageArray[14];
+                                    accelerationY = messageArray[15];
+                                    accelerationZ = messageArray[16];
+                                    angularVelocityX = messageArray[17];
+                                    angularVelocityY = messageArray[18];
+                                    angularVelocityZ = messageArray[19];
+                                    steeringAngle = messageArray[20];
+                                    rpm = messageArray[21];
+                                    dpAiUpdated = true;
                                 }
                             }
                         } catch (IOException e) {

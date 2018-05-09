@@ -38,6 +38,8 @@ public class HelperNBack extends Main implements RecognitionListener {
     private static MediaPlayer mPlayerBeep10;
     private static MediaPlayer mPlayerTakeControl10;
     private static SpeechRecognizer recognizer;
+    private int mNbackNumbers = 10;
+    private int mNbackTests = 4;
     private int mTransitionTime = 10000; // 10s
     private int mMessageDisplayTime = 7000; // 7s
     private int mTestDelay = 7000; // 7s
@@ -72,24 +74,17 @@ public class HelperNBack extends Main implements RecognitionListener {
         mThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                if(mNumberCounter > prefNbackNumbers) {
+                if(mNumberCounter > mNbackNumbers) {
                     mNumberCounter = 1;
                     stopTimer();
 
-                    if(mTestsCounter >= prefNbackTests) {
+                    if(mTestsCounter >= mNbackTests) {
                         mTestsCounter = 1;
                         nbackRunning = false;
                         // TODO implement transition to manual here + HMI
-                        if(piHelper.scenarioState == 1) {
+                        if(piHelper.scenarioState == 1 && Main.modulesPiConnected) {
                             showWarning();
-
-                            final Handler handler = new Handler(Looper.getMainLooper());
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    piHelper.sendManualControlMessage();
-                                }
-                            }, mTransitionTime);
+                            Main.piHelper.sendManualControlMessage(mTransitionTime);
                         }
 
                         toggleRelativeLayout(nbackLayout, false);
@@ -107,15 +102,17 @@ public class HelperNBack extends Main implements RecognitionListener {
                     }
                 } else {
                     mNumberCounter += 1;
-
                     nbackNumber = nbackNextNumber;
+                    nbackUpdated = true;
                     updateLabel(nbackLabel, Integer.toString(nbackNumber));
                     updateLabel(nbackResult, "N");
                     changeNumber();
 
-                    startListening();
+                    // TODO - for the time being disable voice recognition
+//                    startListening();
                     playSoundBeep();
-                    if(mNumberCounter-1 >= nbackLevel) {
+
+                    if(mNumberCounter-2 >= nbackLevel) {
                         toggleImageView(nbackCircle, true);
                         animateCircle(mNumberDelay);
                     } else {
@@ -154,11 +151,14 @@ public class HelperNBack extends Main implements RecognitionListener {
         }
     }
 
-    public void run(int level) {
+    public void run(int level, int numbers, int tests) {
         nbackRunning = true;
         nbackLevel = level;
+        mNbackNumbers = numbers;
+        mNbackTests = tests;
 
         updateLabel(nbackTypeLabel, "N-Back " + nbackLevel);
+
         if(Main.displayNbackResult == false) {
             toggleTextView(nbackResult, false);
         }
@@ -193,7 +193,7 @@ public class HelperNBack extends Main implements RecognitionListener {
             @Override
             public void run() {
                 AnimationDrawable animation = new AnimationDrawable();
-                animation.addFrame(HMITakeControl, 10000);
+                animation.addFrame(HMITakeControl, mTransitionTime);
                 animation.setOneShot(true);
                 HMIImage.setImageDrawable(animation);
                 HMIMessage.setText("Take control");
@@ -271,7 +271,6 @@ public class HelperNBack extends Main implements RecognitionListener {
             }
         };
 
-
         final Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
@@ -338,7 +337,6 @@ public class HelperNBack extends Main implements RecognitionListener {
             nbackResponse = hypothesis.getHypstr();
             nbackScore = hypothesis.getBestScore();
             nbackProb = hypothesis.getProb();
-            nbackUpdated = true;
             if(DEBUG) {
                 Log.d("NBack", "Final Result: " + nbackResponse + " " + nbackScore + " " + nbackProb);
             }

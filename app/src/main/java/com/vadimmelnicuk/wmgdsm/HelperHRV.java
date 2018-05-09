@@ -99,7 +99,7 @@ public class HelperHRV extends Main {
 
         if(mClean == false) {
             if(RRm1.getRR() < tb && rr > tt) {
-                if(DISPLAY_LOGS) Log.e("HRV", "Extopic beat");
+                if(DISPLAY_LOGS) Log.e("HRV", "Eсtopic beat");
                 Main.polarH7Helper.RRs.set(Main.polarH7Helper.RRs.size()-1, new RRObject(mean, RRm1.getTimestamp(), 2));
                 filteredRR = rr + RRm1.getRR() - mean;
             } else if(RRm1.getRR() < 0.75*RRm2.getRR() && rr < 0.75*RRm2.getRR()) {

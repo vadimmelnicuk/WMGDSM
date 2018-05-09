@@ -160,19 +160,19 @@ public class FragmentModules extends Fragment {
                 modulesNbackButton0.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Main.nbackHelper.run(0);
+                        Main.nbackHelper.run(0, Main.prefNbackNumbers, Main.prefNbackTests);
                     }
                 });
                 modulesNbackButton1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Main.nbackHelper.run(1);
+                        Main.nbackHelper.run(1, Main.prefNbackNumbers, Main.prefNbackTests);
                     }
                 });
                 modulesNbackButton2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Main.nbackHelper.run(2);
+                        Main.nbackHelper.run(2, Main.prefNbackNumbers, Main.prefNbackTests);
                     }
                 });
                 modulesNbackIndicator.setImageResource(R.drawable.circle_green);

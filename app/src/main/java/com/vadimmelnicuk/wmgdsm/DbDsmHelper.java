@@ -460,6 +460,30 @@ public class DbDsmHelper extends SQLiteOpenHelper {
             values.put(COLUMN_GEAR, Main.piHelper.gear);
             Main.piHelper.dpUpdated = false;
         }
+        if(Main.piHelper.dpAiUpdated) {
+            values.put(COLUMN_VEHICLE_ID, Main.piHelper.vehicleId);
+            values.put(COLUMN_POSITION_LATITUDE, Main.piHelper.positionLatitude);
+            values.put(COLUMN_POSITION_LONGITUDE, Main.piHelper.positionLongitude);
+            values.put(COLUMN_POSITION_ELEVATION, Main.piHelper.positionElevation);
+            values.put(COLUMN_POSITION_X, Main.piHelper.positionX);
+            values.put(COLUMN_POSITION_Y, Main.piHelper.positionY);
+            values.put(COLUMN_POSITION_Z, Main.piHelper.positionZ);
+            values.put(COLUMN_ORIENTATION_X, Main.piHelper.orientationX);
+            values.put(COLUMN_ORIENTATION_Y, Main.piHelper.orientationY);
+            values.put(COLUMN_ORIENTATION_Z, Main.piHelper.orientationZ);
+            values.put(COLUMN_VELOCITY_X, Main.piHelper.velocityX);
+            values.put(COLUMN_VELOCITY_Y, Main.piHelper.velocityY);
+            values.put(COLUMN_VELOCITY_Z, Main.piHelper.velocityZ);
+            values.put(COLUMN_ACCELERATION_X, Main.piHelper.accelerationX);
+            values.put(COLUMN_ACCELERATION_Y, Main.piHelper.accelerationY);
+            values.put(COLUMN_ACCELERATION_Z, Main.piHelper.accelerationZ);
+            values.put(COLUMN_ANGULAR_VELOCITY_X, Main.piHelper.angularVelocityX);
+            values.put(COLUMN_ANGULAR_VELOCITY_Y, Main.piHelper.angularVelocityY);
+            values.put(COLUMN_ANGULAR_VELOCITY_Z, Main.piHelper.angularVelocityZ);
+            values.put(COLUMN_STEERING_ANGLE, Main.piHelper.steeringAngle);
+            values.put(COLUMN_RPM, Main.piHelper.rpm);
+            Main.piHelper.dpAiUpdated = false;
+        }
         if(Main.modulesNBack) {
             values.put(COLUMN_NBACK_STATE, (Main.nbackHelper.nbackRunning) ? 1 : 0);
 
